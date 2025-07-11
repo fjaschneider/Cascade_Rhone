@@ -141,10 +141,56 @@ plt_slope <- ggplot(shp_smooted) +
         axis.text = element_text(size = 8, colour = 'black')) 
 plt_slope
 
-# ggsave(filename = 'img/elev_profile.svg', plot = plt_elev, width = 16, height = 8, units = 'cm', dpi = 300)
-
+# ggsave(filename = 'img/slope_profile.svg', plot = plt_slope, width = 16, height = 8, units = 'cm', dpi = 300)
 
 ```
 
+
+## GSD along the Rhône River
+
+Using the new smoothed elevation profile, we extracted the slope for each river reach. The slope along the Rhône River is shown in Figure \@ref(fig:slope). 
+
+```{r slope, fig.cap= 'Longitudinal slope profile of the Rhône River derived from the smoothed elevation data.', fig.align='center', fig.height=4, fig.width=7, fig.dpi=500, echo=FALSE, warning=FALSE}
+
+
+# New data with less reaches
+
+shp_var <- read_shp %>%
+  rename(Dam = la_prise0) %>%
+  arrange(reach_ID) 
+
+df_ele_smooth <- df_elev %>%
+  select(reach_ID,el_FN,el_TN,Slope)
+
+shp_smooted <- shp_var %>%
+  select(reach_ID,Length,FromN,ToN,Dam,Trib) %>%
+  left_join(df_ele_smooth, by = "reach_ID")
+
+
+shp_smooted$pk <- cumsum(shp_smooted$Length)/1000
+dams <- shp_smooted[!is.na(shp_smooted$Dam),]
+trib <- shp_smooted[!is.na(shp_smooted$Trib),]
+
+plt_slope <- ggplot(shp_smooted) +
+  geom_line(aes(pk, Slope, colour = "orange")) +
+  geom_vline(data = dams, aes(xintercept = pk, colour = 'black'), linetype = 5, lwd = 0.2) +
+  geom_text(aes(pk, el_FN, label = Dam), angle = 90, vjust = -0.2, hjust = 1, size = 2, y = Inf) +
+  geom_segment(data = trib, aes(x = pk, xend = pk, y = Slope+(max(Slope)*0.2), yend = Slope, colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
+  geom_text(data = trib, aes(pk, Slope+(max(Slope)*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
+  scale_y_continuous(name = expression('Elevation (m)'), n.breaks = 10, expand = expansion(c(0,0.05)), limits = c(0,0.015)) +
+  scale_x_continuous(n.breaks = 10) +
+  scale_colour_manual(breaks = c("orange", 'black', 'blue'),
+                      values = c("orange", 'black', 'blue'),
+                      labels = c("Slope (m/m)", 'Dams', 'Tributaries'), name = '') +
+  labs(x = 'Reach ID') +
+  theme_article(base_family = "Times New Roman") +
+  theme(legend.key.height = unit(0.5, 'cm'), legend.position = 'bottom', legend.spacing = unit(0, 'cm')) +
+  theme(text = element_text(size = 8, colour = 'black'),
+        axis.text = element_text(size = 8, colour = 'black')) 
+plt_slope
+
+# ggsave(filename = 'img/slope_profile.svg', plot = plt_slope, width = 16, height = 8, units = 'cm', dpi = 300)
+
+```
 
 
