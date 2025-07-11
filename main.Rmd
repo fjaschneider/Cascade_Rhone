@@ -1,0 +1,150 @@
+---
+title: "Cascade Rhône River catchment"
+author: "Fabio Schneider"
+date: "2025-07-11"
+output:
+  bookdown::html_document2:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    toc_title: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r, include=FALSE}
+# Libraries
+library(sf)
+library(mapview)
+library(plotly)
+library(ggrepel)
+library(dplyr)
+library(tidyverse)
+library(ggpubr)
+library(forestmangr)
+library(zoo)
+library(egg)
+```
+
+
+
+
+
+# Cascade Model Data Input
+
+The Cascade model is an expert-based model that uses geomorphological river characteristics to simulate bedload transport capacity.
+
+To characterize the geomorfological properties of the river, the dataset must include information for each river reach.
+
+## Number of Reaches
+
+To prepare the input data for the Cascade model, the river reaches were modified to incorporate the reservoirs associated with each dam. The previous dataset contained 195 reaches, after the adjustments, we updated dataset includes a total of 67 reaches.
+
+We adapted the number of reaches by summarizing those with similar geomorphological characteristics by integrating all reaches contained within each dam reservoir. Figure \@ref(fig:reaches) shows the integration of the reaches within the Génissiat Reservoir.
+
+
+```{r reaches, echo=FALSE, fig.cap='Integration of reaches affected by dam reservoirs'}
+knitr::include_graphics("img/reach.png")
+
+```
+
+
+
+## Elevation data smoothed
+
+The dam reservoirs affect the river's elevation profile. To better simulate the bedload transport capacity, we smoothed the river's elevation profile. The elevation profile influenced by the dams, as well the smoothed profile are shown in Figure \@ref(fig:elev).
+
+```{r elev, fig.cap= 'Comparision between the original and smoothed elevation profile of the Rhône River.', fig.align='center', fig.height=4, fig.width=7, fig.dpi=500, echo=FALSE, warning=FALSE}
+
+# New data with less reaches
+
+df_elev <- read.csv("data_rhone/Tables/elev_smooth_r67.csv")
+df_elev$pk <- cumsum(df_elev$Length)/1000
+
+read_shp <- read_sf('data_rhone/GIS_data/Rhone_network_r67.shp')
+shp <- read_shp %>%
+  rename(Dam = la_prise0) %>%
+  arrange(reach_ID)
+
+shp$pk <- cumsum(shp$Length)/1000
+dams <- shp[!is.na(shp$Dam),]
+trib <- shp[!is.na(shp$Trib),]
+
+plt_elev <- ggplot(shp) +
+  geom_line(aes(pk,el_FN, colour = 'red')) +
+  geom_line(data = df_elev, aes(pk,el_FN, colour = 'green4')) +
+  geom_vline(data = dams, aes(xintercept = pk, colour = 'black'), linetype = 5, lwd = 0.2) +
+  geom_text(aes(pk, el_FN, label = Dam), angle = 90, vjust = -0.2, hjust = 1, size = 2, y = Inf) +
+  geom_segment(data = trib, aes(x = pk, xend = pk, y = el_FN+(max(el_FN)*0.2), yend = el_FN, colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
+  geom_text(data = trib, aes(pk, el_FN+(max(el_FN)*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
+  scale_y_continuous(name = expression('Elevation (m)'), n.breaks = 10, expand = expansion(c(0,0.05)), limits = c(0,600)) +
+  scale_x_continuous(n.breaks = 10) +
+  scale_colour_manual(breaks = c('red', 'green4', 'black', 'blue'),
+                      values = c('red', 'green4', 'black', 'blue'),
+                      labels = c('Elevation (DEM)', 'Elevation (Smoothed)', 'Dams', 'Tributaries'), name = '') +
+  labs(x = 'Reach ID') +
+  theme_article(base_family = "Times New Roman") +
+  theme(legend.key.height = unit(0.5, 'cm'), legend.position = 'bottom', legend.spacing = unit(0, 'cm')) +
+  theme(text = element_text(size = 8, colour = 'black'),
+        axis.text = element_text(size = 8, colour = 'black'))
+plt_elev
+
+# ggsave(filename = 'img/elev_profile.svg', plot = plt_elev, width = 16, height = 8, units = 'cm', dpi = 300)
+
+
+```
+
+## Slope along the Rhône River
+
+Using the new smoothed elevation profile, we extracted the slope for each river reach. The slope along the Rhône River is shown in Figure \@ref(fig:slope). 
+
+```{r slope, fig.cap= 'Longitudinal slope profile of the Rhône River derived from the smoothed elevation data.', fig.align='center', fig.height=4, fig.width=7, fig.dpi=500, echo=FALSE, warning=FALSE}
+
+
+# New data with less reaches
+
+shp_var <- read_shp %>%
+  rename(Dam = la_prise0) %>%
+  arrange(reach_ID) 
+
+df_ele_smooth <- df_elev %>%
+  select(reach_ID,el_FN,el_TN,Slope)
+
+shp_smooted <- shp_var %>%
+  select(reach_ID,Length,FromN,ToN,Dam,Trib) %>%
+  left_join(df_ele_smooth, by = "reach_ID")
+
+
+shp_smooted$pk <- cumsum(shp_smooted$Length)/1000
+dams <- shp_smooted[!is.na(shp_smooted$Dam),]
+trib <- shp_smooted[!is.na(shp_smooted$Trib),]
+
+plt_slope <- ggplot(shp_smooted) +
+  geom_line(aes(pk, Slope, colour = "orange")) +
+  geom_vline(data = dams, aes(xintercept = pk, colour = 'black'), linetype = 5, lwd = 0.2) +
+  geom_text(aes(pk, el_FN, label = Dam), angle = 90, vjust = -0.2, hjust = 1, size = 2, y = Inf) +
+  geom_segment(data = trib, aes(x = pk, xend = pk, y = Slope+(max(Slope)*0.2), yend = Slope, colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
+  geom_text(data = trib, aes(pk, Slope+(max(Slope)*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
+  scale_y_continuous(name = expression('Elevation (m)'), n.breaks = 10, expand = expansion(c(0,0.05)), limits = c(0,0.015)) +
+  scale_x_continuous(n.breaks = 10) +
+  scale_colour_manual(breaks = c("orange", 'black', 'blue'),
+                      values = c("orange", 'black', 'blue'),
+                      labels = c("Slope (m/m)", 'Dams', 'Tributaries'), name = '') +
+  labs(x = 'Reach ID') +
+  theme_article(base_family = "Times New Roman") +
+  theme(legend.key.height = unit(0.5, 'cm'), legend.position = 'bottom', legend.spacing = unit(0, 'cm')) +
+  theme(text = element_text(size = 8, colour = 'black'),
+        axis.text = element_text(size = 8, colour = 'black')) 
+plt_slope
+
+# ggsave(filename = 'img/elev_profile.svg', plot = plt_elev, width = 16, height = 8, units = 'cm', dpi = 300)
+
+
+```
+
+
+
