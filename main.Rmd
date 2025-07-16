@@ -9,7 +9,6 @@ output:
     toc_float: true
     toc_title: true
     number_sections: true
-runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
@@ -36,16 +35,27 @@ library(rmarkdown)
 ```
 
 
+# Methods
+
+## Study area
+
+Located in the South-West of Switzerland and South-East of France the Rhône River flows trough 800 km, where ~525 km in French territory. The Rhône River catchment is the most important source of hydropower in France. It covers an area of approximately 97800 km2, of which 87400 km2 (about 90%) lies within French territory (Figure \@ref(fig:local)). In this study, we simulated the bedload connectivity along the main Rhône River within French territory.
+
+```{r local, echo=FALSE, fig.cap='Location of the Rhône River catchment with the main dams along the river.'}
+knitr::include_graphics("img/local_mapa.png")
+
+```
+
+Grain size distribution (GSD) data and bedload measurements in rivers are often scarce or absent, making bedload modeling challenging. For this reason, we chose to model the bedload connectivity along the Rhône River rather than in its tributaries, where data availability even more limited.
 
 
-
-# Cascade Model Data Input
+## Cascade Model Data Input
 
 The Cascade model is an expert-based model that uses geomorphological river characteristics to simulate bedload transport capacity.
 
 To characterize the geomorfological properties of the river, the dataset must include information for each river reach.
 
-## Number of Reaches
+### Number of Reaches
 
 To prepare the input data for the Cascade model, the river reaches were modified to incorporate the reservoirs associated with each dam. The previous dataset contained 195 reaches, after the adjustments, we updated dataset includes a total of 67 reaches.
 
@@ -59,18 +69,19 @@ knitr::include_graphics("img/reach.png")
 
 
 
-## Elevation data smoothed
+### Elevation and Slope data smoothed
 
-The dam reservoirs affect the river's elevation profile. To better simulate the bedload transport capacity, we smoothed the river's elevation profile. The elevation profile influenced by the dams, as well the smoothed profile are shown in Figure \@ref(fig:elev).
+To remove the effect of dams on elevation and slope along the Rhône River, we smoothed the elevation profile to approximate as closely as possible the natural river slope, without influence of dam reservoirs. The resulting smoothed elevation profile is show in Figure \@ref(fig:elev). Figure \@ref(fig:slope) shows the slope for each river reach based on the smoothed elevation profile. The slope in the upper part of the Rhône River is steeper, while downstream of the Génissiat Dam, the slope becomes more gradual and remains relatively uniform until the catchment outlet.
 
-```{r elev, fig.cap= 'Comparision between the original and smoothed elevation profile of the Rhône River.', fig.align='center', fig.height=4, fig.width=7, fig.dpi=500, echo=FALSE, warning=FALSE}
+
+```{r elev, fig.cap= 'Comparision between the original and smoothed elevation profile of the Rhône River.', fig.height=4, fig.width=7, fig.dpi=500, echo=FALSE, warning=FALSE}
 
 # New data with less reaches
 
 df_elev <- read.csv("data_rhone/Tables/elev_smooth_r67.csv")
 df_elev$pk <- cumsum(df_elev$Length)/1000
 
-read_shp <- read_sf('data_rhone/GIS_data/Rhone_network_r67.shp')
+read_shp <- read_sf('data_rhone/GIS_data/network/Rhone_67reaches.shp')
 shp <- read_shp %>%
   rename(Dam = la_prise0) %>%
   arrange(reach_ID)
@@ -103,11 +114,8 @@ plt_elev
 
 ```
 
-## Slope along the Rhône River
 
-Using the new smoothed elevation profile, we extracted the slope for each river reach. The slope along the Rhône River is shown in Figure \@ref(fig:slope). 
-
-```{r slope, fig.cap= 'Longitudinal slope profile of the Rhône River derived from the smoothed elevation data.', fig.align='center', fig.height=4, fig.width=7, fig.dpi=500, echo=FALSE, warning=FALSE}
+```{r slope, fig.cap= 'Longitudinal slope profile of the Rhône River derived from the smoothed elevation data.', fig.height=4, fig.width=7, fig.dpi=500, echo=FALSE, warning=FALSE}
 
 
 # New data with less reaches
@@ -120,7 +128,7 @@ df_ele_smooth <- df_elev %>%
   select(reach_ID,el_FN,el_TN,Slope)
 
 shp_smooted <- shp_var %>%
-  select(reach_ID,Length,FromN,ToN,Dam,Trib) %>%
+  select(reach_ID,Length,FromN,ToN,Dam,Trib,n,Wac) %>%
   left_join(df_ele_smooth, by = "reach_ID")
 
 
@@ -151,7 +159,88 @@ plt_slope
 ```
 
 
-## GSD along the Rhône River
+### Channel width and Manning's coefficient
+
+
+Figure \@ref(fig:wac) shows the channel width, and Figure \@ref(fig:n) shows the Manning’s coefficient for each river reach along the Rhône River. Figure \@ref(fig:basemaps) shows the longitudinal variation of Manning’s coefficient, channel width, and slope along the river. Channel width tends to increase at confluences with tributaries. The Manning’s coefficient was defined as relative uniform along the Rhône River.
+
+```{r wac, fig.cap= 'Channel width of each river reach along the Rhône River.', fig.height=4, fig.width=7, fig.dpi=500, echo=FALSE, warning=FALSE}
+
+p_wac <- ggplot(shp_smooted) +
+  geom_col(aes(reach_ID, Wac, fill = 'green4'), color = 1, lwd = 0.1) +
+  geom_line(aes(reach_ID, el_FN, colour = 'coral4'), lwd = 0.5) +
+  geom_point(data = dams, aes(reach_ID, el_FN, colour = 'black'), shape = 18, size = 2) +
+  scale_y_continuous(name = expression('Width channel (m)'), n.breaks = 10, expand = c(0,0), limits = c(0,500),
+                     sec.axis = sec_axis(~., name = 'Altitude (m)', breaks = seq(0,500,100))) +
+  scale_x_continuous(n.breaks = 10) +
+  geom_text(aes(reach_ID, el_FN, label = Dam), angle = 90, vjust = -0.2, hjust = 1, size = 2, y = Inf) +
+  geom_segment(data = trib, aes(x = reach_ID, xend = reach_ID, y = el_FN+50, yend = el_FN, colour = 'blue'),
+               arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
+  geom_text(data = trib, aes(reach_ID, el_FN+50, label = Trib), angle = 90, vjust = -0.2, hjust = 0, size = 2, color = 'blue') +
+  geom_vline(data = dams, aes(xintercept = reach_ID, colour = 'black'), linetype = 5, lwd = 0.2) +
+  scale_fill_manual(breaks = c('gray75', 'chocolate1', 'brown', 'green4', 'coral4', 'black', 'blue'),
+                    values = c('gray75', 'chocolate1', 'brown', 'green4', 'coral4', 'black', 'blue'),
+                    labels = c('Manning`s coefficient', 'Slope', 'GSD', 'Width channel', 'Altitude', 'Dams', 'Tributaries'), name = '') +
+  scale_colour_manual(breaks = c('gray75', 'chocolate1', 'brown', 'green4', 'coral4', 'black', 'blue'),
+                      values = c('gray75', 'chocolate1', 'brown', 'green4', 'coral4', 'black', 'blue'),
+                      labels = c('Manning`s coefficient', 'Slope', 'GSD', 'Width channel', 'Altitude', 'Dams', 'Tributaries'), name = '') +
+  labs(x = 'Reach ID') +
+  theme_article(base_family = "Times New Roman") +
+  geom_hline(yintercept = 0, lwd = 0.2) +
+  theme(legend.key.height = unit(0.5, 'cm'), legend.position = 'bottom', legend.spacing = unit(0, 'cm')) +
+  theme(text = element_text(size = 8, colour = 'black'),
+        axis.text = element_text(size = 8, colour = 'black')) 
+p_wac
+
+# ggsave(filename = 'img/width_channel.svg', plot = p_wac, width = 16, height = 8, units = 'cm', dpi = 300)
+
+```
+
+
+
+
+```{r n, fig.cap= 'Manning’s coefficient of each river reach along the Rhône River.', fig.height=4, fig.width=7, fig.dpi=500, echo=FALSE, warning=FALSE}
+
+# Manning's coefficient
+
+p_n <- ggplot(shp_smooted) +
+  geom_col(aes(reach_ID, n, fill = 'gray75'), color = 1, lwd = 0.1) +
+  geom_line(aes(reach_ID, el_FN/5000, colour = 'coral4'), lwd = 0.5) +
+  geom_point(data = dams, aes(reach_ID, el_FN/5000, colour = 'black'), shape = 18, size = 2) +
+  scale_y_continuous(name = expression('Manning`s coefficient (m'^{1/3}~'.s'^-1~')'), n.breaks = 10, expand = c(0,0), limits = c(0,0.1),
+                     sec.axis = sec_axis(~.*5000, name = 'Altitude (m)', breaks = seq(0,500,100))) +
+  scale_x_continuous(n.breaks = 10) +
+  geom_text(aes(reach_ID, el_FN/5000, label = Dam), angle = 90, vjust = -0.2, hjust = 1, size = 2, y = Inf) +
+  geom_segment(data = trib, aes(x = reach_ID, xend = reach_ID, y = el_FN/5000+0.01, yend = el_FN/5000, colour = 'blue'),
+               arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
+  geom_text(data = trib, aes(reach_ID, el_FN/5000+0.01, label = Trib), angle = 90, vjust = -0.2, hjust = 0, size = 2, color = 'blue') +
+  geom_vline(data = dams, aes(xintercept = reach_ID, colour = 'black'), linetype = 5, lwd = 0.2) +
+  scale_fill_manual(breaks = c('gray75', 'chocolate1', 'brown', 'coral4', 'black', 'blue'),
+                    values = c('gray75', 'chocolate1', 'brown', 'coral4', 'black', 'blue'),
+                    labels = c('Manning`s coefficient', 'Slope', 'GSD', 'Altitude', 'Dams', 'Tributaries'), name = '') +
+  scale_colour_manual(breaks = c('gray75', 'chocolate1', 'brown', 'coral4', 'black', 'blue'),
+                      values = c('gray75', 'chocolate1', 'brown', 'coral4', 'black', 'blue'),
+                      labels = c('Manning`s coefficient', 'Slope', 'GSD', 'Altitude', 'Dams', 'Tributaries'), name = '') +
+  labs(x = 'Reach ID') +
+  theme_article(base_family = "Times New Roman") +
+  geom_hline(yintercept = 0, lwd = 0.2) +
+  theme(legend.key.height = unit(0.5, 'cm'), legend.position = 'bottom', legend.spacing = unit(0, 'cm')) +
+  theme(text = element_text(size = 8, colour = 'black'),
+        axis.text = element_text(size = 8, colour = 'black'))
+p_n
+
+# ggsave(filename = 'img/manning.svg',, plot = p_n, width = 16, height = 8, units = 'cm', dpi = 300)
+
+```
+
+
+```{r basemaps, echo=FALSE, fig.cap='Longitudinal Manning’s coefficient, slope, and channel width along the Rhône River.'}
+knitr::include_graphics("img/base_maps.png")
+
+```
+
+
+### GSD along the Rhône River
 
 
 ```{r, include=FALSE}
@@ -187,7 +276,7 @@ shp_gsd_approx$D84 <- na.locf(shp_gsd_approx$D84, fromLast = T)
 dams <- shp_gsd_approx[!is.na(shp$Dam),]
 trib <- shp_gsd_approx[!is.na(shp$Trib),]
 
-write_sf(shp_gsd_approx, "data_rhone/GIS_data/temp/shp_net_temp.gpkg")
+# write_sf(shp_gsd_approx, "data_rhone/GIS_data/network/Rhone_reaches_Cascade21.shp")
 
 ```
 
@@ -312,79 +401,74 @@ p_D84
 
 The grain size distribution (GSD) was obtained from the data available in the report by Parrot et al. (2021), Annexe 17: Données statistiques (D16, D50, D84, D90) des prélèvements réalisés par dragage avec la CNR dans le chenal du Rhône (campagnes 2012-13). The Figure \@ref(fig:gsd) shows the data measured data (black bars) and the linearly estimated values (brown bars) for each river reach along the Rhône River.
 
-For the reaches with more than one GSD value, the highest value observed for each GSD class was used. For the reaches without GSD data, values were linearly interpolated from neighboring reaches with available data. The Figure 8 shows the longitudinal GSD along the Rhône River.
+For the reaches with more than one GSD value, the highest value observed for each GSD class was used. For the reaches without GSD data, values were linearly interpolated from neighboring reaches with available data.
 
-```{r gsd, fig.cap= 'Grain Size Distribution (GSD) measured and estimated of the bed material along the Rhône River for each river reach.', fig.align='center', fig.height=8, fig.width=7, fig.dpi=500, echo=FALSE, warning=FALSE}
+```{r gsd, fig.cap= 'Grain Size Distribution (GSD) measured and estimated of the bed material along the Rhône River for each river reach.', fig.height=8, fig.width=7, fig.dpi=500, echo=FALSE, warning=FALSE}
 p_GSD <- ggarrange(plots = list(plt_elev_gsd, p_D16, p_D50, p_D84), nrow = 4, ncol = 1)
 
 # ggsave(filename = 'img/GSD.svg', plot = p_GSD, width = 16, height = 18, units = 'cm', dpi = 300)
 ```
 
-```{r, echo=FALSE, warning=FALSE}
-
-library(sf)
-library(leaflet)
-library(dplyr)
-library(shiny)
-
-# ⇢ Ajuste o caminho se o .gpkg estiver noutro lugar
-shp <- st_read("data_rhone/GIS_data/temp/shp_net_temp.gpkg", quiet = TRUE)
-
-# Garante lat/lon (WGS 84)
-if (st_crs(shp)$epsg != 4326) shp <- st_transform(shp, 4326)
-
-# Colunas disponíveis (numéricas ou categóricas)
-cols_disp <- shp %>%
-  st_drop_geometry() %>%
-  select(where(~ is.numeric(.x) || is.character(.x) || is.factor(.x))) %>%
-  names()
-
-selectInput("var_sel",
-            label   = "Coluna:",
-            choices = cols_disp,
-            selected = cols_disp[1])
-
-
-renderLeaflet({
-  req(input$var_sel)
-
-  vals_raw <- shp[[input$var_sel]]
-
-  # Detecta tipo da variável
-  is_num <- suppressWarnings(!any(is.na(as.numeric(as.character(vals_raw)))))
-
-  if (is_num) {
-    vals <- as.numeric(as.character(vals_raw))
-    pal <- colorNumeric("viridis", domain = vals, na.color = "transparent")
-    wgt <- scales::rescale(vals, to = c(1, 5))
-    tipo_legenda <- "gradiente"
-  } else {
-    vals <- as.factor(vals_raw)
-    pal <- colorFactor("Set3", domain = vals, na.color = "transparent")
-    wgt <- 2
-    tipo_legenda <- "categorias"
-  }
-
-  leaflet(shp) %>%
-    addProviderTiles("CartoDB.Positron") %>%
-    addPolylines(
-      color = ~pal(vals),
-      weight = wgt,
-      opacity = 0.9,
-      popup = ~paste(input$var_sel, ":", vals)
-    ) %>%
-    addLegend("bottomright",
-              pal = pal,
-              values = vals,
-              title = paste("Legenda:", input$var_sel, "-", tipo_legenda))
-})
+```{r shinyAPP_map, echo=FALSE, warning=FALSE}
+# 
+# # ⇢ Ajuste o caminho se o .gpkg estiver noutro lugar
+# shp <- st_read("data_rhone/GIS_data/temp/shp_net_temp.gpkg", quiet = TRUE)
+# 
+# # Garante lat/lon (WGS 84)
+# if (st_crs(shp)$epsg != 4326) shp <- st_transform(shp, 4326)
+# 
+# # Colunas disponíveis (numéricas ou categóricas)
+# cols_disp <- shp %>%
+#   st_drop_geometry() %>%
+#   select(where(~ is.numeric(.x) || is.character(.x) || is.factor(.x))) %>%
+#   names()
+# 
+# selectInput("var_sel",
+#             label   = "Coluna:",
+#             choices = cols_disp,
+#             selected = cols_disp[1])
+# 
+# 
+# renderLeaflet({
+#   req(input$var_sel)
+# 
+#   vals_raw <- shp[[input$var_sel]]
+# 
+#   # Detecta tipo da variável
+#   is_num <- suppressWarnings(!any(is.na(as.numeric(as.character(vals_raw)))))
+# 
+#   if (is_num) {
+#     vals <- as.numeric(as.character(vals_raw))
+#     pal <- colorNumeric("viridis", domain = vals, na.color = "transparent")
+#     wgt <- scales::rescale(vals, to = c(1, 5))
+#     tipo_legenda <- "gradiente"
+#   } else {
+#     vals <- as.factor(vals_raw)
+#     pal <- colorFactor("Set3", domain = vals, na.color = "transparent")
+#     wgt <- 2
+#     tipo_legenda <- "categorias"
+#   }
+# 
+#   leaflet(shp) %>%
+#     addProviderTiles("CartoDB.Positron") %>%
+#     addPolylines(
+#       color = ~pal(vals),
+#       weight = wgt,
+#       opacity = 0.9,
+#       popup = ~paste(input$var_sel, ":", vals)
+#     ) %>%
+#     addLegend("bottomright",
+#               pal = pal,
+#               values = vals,
+#               title = paste("Legenda:", input$var_sel, "-", tipo_legenda))
+# })
 
 
 ```
 
 
 
-
+## Discharge
 
 
 
