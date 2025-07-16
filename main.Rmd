@@ -9,6 +9,7 @@ output:
     toc_float: true
     toc_title: true
     number_sections: true
+runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
@@ -28,6 +29,9 @@ library(ggpubr)
 library(forestmangr)
 library(zoo)
 library(egg)
+library(shiny)
+library(rmarkdown)
+
 
 ```
 
@@ -183,6 +187,8 @@ shp_gsd_approx$D84 <- na.locf(shp_gsd_approx$D84, fromLast = T)
 dams <- shp_gsd_approx[!is.na(shp$Dam),]
 trib <- shp_gsd_approx[!is.na(shp$Trib),]
 
+write_sf(shp_gsd_approx, "data_rhone/GIS_data/temp/shp_net_temp.gpkg")
+
 ```
 
 
@@ -314,29 +320,66 @@ p_GSD <- ggarrange(plots = list(plt_elev_gsd, p_D16, p_D50, p_D84), nrow = 4, nc
 # ggsave(filename = 'img/GSD.svg', plot = p_GSD, width = 16, height = 18, units = 'cm', dpi = 300)
 ```
 
-```{r}
+```{r, echo=FALSE, warning=FALSE}
 
-map50 <- mapview(shp_gsd_approx, zcol = "D50", title("none"))
-map_gsd <- mapview(shp_gsd)
-
-map_gsd+map50
-
-library(leaflet)
 library(sf)
+library(leaflet)
+library(dplyr)
+library(shiny)
 
-valores <- shp_gsd_approx$D50
-pal <- colorNumeric("YlGnBu", domain = valores)
+# ⇢ Ajuste o caminho se o .gpkg estiver noutro lugar
+shp <- st_read("data_rhone/GIS_data/temp/shp_net_temp.gpkg", quiet = TRUE)
 
-leaflet(shp_gsd_approx) %>%
-  addProviderTiles("CartoDB.Positron") %>%
-  addPolygons(fillColor = ~pal(D50),
-              color = "#444444",
-              weight = 0.7,
-              fillOpacity = 0.8) %>%
-  addLegend("bottomright", 
-            pal = pal, 
-            values = ~D50, 
-            title = "Título da legenda")
+# Garante lat/lon (WGS 84)
+if (st_crs(shp)$epsg != 4326) shp <- st_transform(shp, 4326)
+
+# Colunas disponíveis (numéricas ou categóricas)
+cols_disp <- shp %>%
+  st_drop_geometry() %>%
+  select(where(~ is.numeric(.x) || is.character(.x) || is.factor(.x))) %>%
+  names()
+
+selectInput("var_sel",
+            label   = "Coluna:",
+            choices = cols_disp,
+            selected = cols_disp[1])
+
+
+renderLeaflet({
+  req(input$var_sel)
+
+  vals_raw <- shp[[input$var_sel]]
+
+  # Detecta tipo da variável
+  is_num <- suppressWarnings(!any(is.na(as.numeric(as.character(vals_raw)))))
+
+  if (is_num) {
+    vals <- as.numeric(as.character(vals_raw))
+    pal <- colorNumeric("viridis", domain = vals, na.color = "transparent")
+    wgt <- scales::rescale(vals, to = c(1, 5))
+    tipo_legenda <- "gradiente"
+  } else {
+    vals <- as.factor(vals_raw)
+    pal <- colorFactor("Set3", domain = vals, na.color = "transparent")
+    wgt <- 2
+    tipo_legenda <- "categorias"
+  }
+
+  leaflet(shp) %>%
+    addProviderTiles("CartoDB.Positron") %>%
+    addPolylines(
+      color = ~pal(vals),
+      weight = wgt,
+      opacity = 0.9,
+      popup = ~paste(input$var_sel, ":", vals)
+    ) %>%
+    addLegend("bottomright",
+              pal = pal,
+              values = vals,
+              title = paste("Legenda:", input$var_sel, "-", tipo_legenda))
+})
+
+
 ```
 
 
