@@ -251,7 +251,7 @@ knitr::include_graphics("img/base_maps.png")
 df_gsd_parrot <- read.csv("data_rhone/GIS_data/gsd/gsd_parrot.csv")
 df_gsd_parrot <- df_gsd_parrot[,c("reach_ID", "D16mm", "D50mm", "D84mm")]
 
-df_gsd <- aggregate(.~reach_ID, data = df_gsd_parrot, FUN = max) %>% 
+df_gsd <- aggregate(.~reach_ID, data = df_gsd_parrot, FUN = max) %>%
   rename(D16 = D16mm, D50 = D50mm, D84 = D84mm) %>% na.omit()
 df_gsd[,-1] <- df_gsd[,-1]/1000
 
@@ -276,7 +276,7 @@ shp_gsd_approx$D84 <- na.locf(shp_gsd_approx$D84, fromLast = T)
 dams <- shp_gsd_approx[!is.na(shp$Dam),]
 trib <- shp_gsd_approx[!is.na(shp$Trib),]
 
-# write_sf(shp_gsd_approx, "data_rhone/GIS_data/network/Rhone_reaches_Cascade21.shp")
+write_sf(shp_gsd_approx, "data_rhone/GIS_data/network/Rhone_reaches_Cascade21.shp")
 
 ```
 
@@ -471,6 +471,109 @@ p_GSD <- ggarrange(plots = list(plt_elev_gsd, p_D16, p_D50, p_D84), nrow = 4, nc
 ## Discharge
 
 
+```{r, echo=FALSE, warning=FALSE}
+
+# # Get discharge values
+# library(dplyr)
+# library(lubridate)
+# library(data.table)
+# library(MASS)
+# library(reshape)
+# 
+# # load data q rhone J2000
+# load("k:/Labo/20_OSR/J2000/ReachDataOSR6.RData")
+# 
+# # function to extract reaches
+# ExtractReach<-function(data, reachID, startdate,enddate){
+# 
+#   # créer un dataframe correspondant au reach ID
+#   DataReach<-subset(data$Data, data$Data[,1]==reachID)
+#   # ensuite on apparie le vecteur de dates et le df pour former un seul dataframe
+#   # on n'a plus besoin de la colonne ID
+#   DataReach<-data.frame(Date=data$dates, DataReach[,-1])
+#   # conversion de tyes sur les colonnes
+#   # transformer la colonne Date en format Date
+#   DataReach$Date<-as.Date(DataReach$Date)
+#   
+#   #on peut maintenant extraire selon les dates voulues
+#   # je crée une séquence de dates journalière entre les dates de début et fin voulues avec seq.Date
+#   DataReach<-subset(DataReach, DataReach$Date %in% seq.Date(from=as.Date(startdate),to = as.Date(enddate),by="day"))
+# 
+#   return (DataReach)
+# }
+# 
+# # reaches Cascade x J2000
+# ids = read.csv('data_rhone/Tables/reach_J2k_x_reach_ID.csv')
+# colnames(ids) = c('ReachID','id_2')
+# ids$ID = as.character(ids$ReachID)
+# 
+# j2k_list <- ids$ReachID
+# 
+# start_date <- as.Date("2009-01-01") # select start date
+# end_date <- as.Date("2019-12-31") # select end date
+# dates <- seq(start_date, end_date, by = "day")
+# 
+# df_discharge <- data.frame(date = dates) # create data frame with the selected period
+# 
+# for (i in seq_along(j2k_list)) {
+# 
+#   reach_id <- j2k_list[i]
+# 
+#   runoff <- ExtractReach(
+#     data = ReachDataOSR6,
+#     reachID = reach_id,
+#     startdate ="2009-01-01",
+#     enddate= "2019-12-31" )
+# 
+#     if (is.data.frame(runoff)) {
+#     runoff <- runoff[[2]]/(24*60*60*1000) # convert L/day to m3/s
+#   }
+#   col_name <- paste0(i)
+# 
+#   df_discharge[[col_name]] <- runoff
+# }
+# 
+# colnames(df_discharge) <- c("yyyy/mm/dd", 1:67)
+# 
+# write.csv(df_discharge, "data_rhone/Tables/discharge_rhone_2009-2019.csv", row.names = F)
+
+```
+
+
+```{r, echo=FALSE, warning=FALSE}
+
+# # read discharge data
+# df_Q <- read.csv("data_rhone/Tables/discharge_rhone_2009-2019.csv")
+# df_Q$yyyy.mm.dd <- ymd(df_Q$yyyy.mm.dd)
+# colnames(df_Q) <- c("yyyy/mm/dd", 1:67)
+# 
+# # Daily discharge by hydrological cycle - start September 21
+# dfq_hy_2009 <- df_Q[df_Q$`yyyy/mm/dd` < '2009-09-21',]
+# dfq_hy_2010 <- df_Q[df_Q$`yyyy/mm/dd` >= '2009-09-21' & df_Q$`yyyy/mm/dd` < '2010-09-21',]
+# dfq_hy_2011 <- df_Q[df_Q$`yyyy/mm/dd` >= '2010-09-21' & df_Q$`yyyy/mm/dd` < '2011-09-21',]
+# dfq_hy_2012 <- df_Q[df_Q$`yyyy/mm/dd` >= '2011-09-21' & df_Q$`yyyy/mm/dd` < '2012-09-21',]
+# dfq_hy_2013 <- df_Q[df_Q$`yyyy/mm/dd` >= '2012-09-21' & df_Q$`yyyy/mm/dd` < '2013-09-21',]
+# dfq_hy_2014 <- df_Q[df_Q$`yyyy/mm/dd` >= '2013-09-21' & df_Q$`yyyy/mm/dd` < '2014-09-21',]
+# dfq_hy_2015 <- df_Q[df_Q$`yyyy/mm/dd` >= '2014-09-21' & df_Q$`yyyy/mm/dd` < '2015-09-21',]
+# dfq_hy_2016 <- df_Q[df_Q$`yyyy/mm/dd` >= '2015-09-21' & df_Q$`yyyy/mm/dd` < '2016-09-21',]
+# dfq_hy_2017 <- df_Q[df_Q$`yyyy/mm/dd` >= '2016-09-21' & df_Q$`yyyy/mm/dd` < '2017-09-21',]
+# dfq_hy_2018 <- df_Q[df_Q$`yyyy/mm/dd` >= '2017-09-21' & df_Q$`yyyy/mm/dd` < '2018-09-21',]
+# dfq_hy_2019 <- df_Q[df_Q$`yyyy/mm/dd` >= '2018-09-21' & df_Q$`yyyy/mm/dd` < '2019-09-21',]
+# 
+# write.csv(dfq_hy_2009, 'data_rhone/Tables/discharge_hy/dfq_hy_2009.csv', row.names = F)
+# write.csv(dfq_hy_2010, 'data_rhone/Tables/discharge_hy/dfq_hy_2010.csv', row.names = F)
+# write.csv(dfq_hy_2011, 'data_rhone/Tables/discharge_hy/dfq_hy_2011.csv', row.names = F)
+# write.csv(dfq_hy_2012, 'data_rhone/Tables/discharge_hy/dfq_hy_2012.csv', row.names = F)
+# write.csv(dfq_hy_2013, 'data_rhone/Tables/discharge_hy/dfq_hy_2013.csv', row.names = F)
+# write.csv(dfq_hy_2014, 'data_rhone/Tables/discharge_hy/dfq_hy_2014.csv', row.names = F)
+# write.csv(dfq_hy_2015, 'data_rhone/Tables/discharge_hy/dfq_hy_2015.csv', row.names = F)
+# write.csv(dfq_hy_2016, 'data_rhone/Tables/discharge_hy/dfq_hy_2016.csv', row.names = F)
+# write.csv(dfq_hy_2017, 'data_rhone/Tables/discharge_hy/dfq_hy_2017.csv', row.names = F)
+# write.csv(dfq_hy_2018, 'data_rhone/Tables/discharge_hy/dfq_hy_2018.csv', row.names = F)
+# write.csv(dfq_hy_2019, 'data_rhone/Tables/discharge_hy/dfq_hy_2019.csv', row.names = F)
+
+
+```
 
 
 
