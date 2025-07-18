@@ -18,8 +18,9 @@ library(egg)
 #####
 ## without silt trib = arrows
 #Lista de pastas onde estão os shapefiles 
-directory <- 'k:/Labo/20_OSR/Rhone_Fabio_Schneider/Result_Cascade_21_67reaches/res_E0_eW&C_noDams/'
+directory <- 'k:/Labo/20_OSR/Rhone_Fabio_Schneider/Result_Cascade_21_67reaches/res_E2_eE&H/'
 pastas <- list.dirs(path = directory, recursive = FALSE)
+save_directory <- "img/res_cascade/res_E2_eE&H/"
 
 ## Transported
 # Loop by folders
@@ -178,7 +179,7 @@ for (pasta in pastas) {
   
   pvout <- ggarrange(plots = list(p, p_vout_sand, p_vout_gravel, p_vout_boulder, p_vout), nrow = 5, ncol = 1)
   
-  ggsave(filename = paste0(directory, 'plots_transp-silt/transp_', ano, '.tiff'),
+  ggsave(filename = paste0(save_directory, 'plots_transp-silt/transp_', ano, '.png'),
          plot = pvout, width = 16, height = 20, units = 'cm', dpi = 300)
 }
 
@@ -340,7 +341,7 @@ for (pasta in pastas) {
   
   pvout <- ggarrange(plots = list(p, p_vout_sand, p_vout_gravel, p_vout_boulder, p_vout), nrow = 5, ncol = 1)
   
-  ggsave(filename = paste0(directory, 'plots_dep-silt/dep_', ano, '.tiff'),
+  ggsave(filename = paste0(save_directory, 'plots_dep-silt/dep_', ano, '.png'),
          plot = pvout, width = 16, height = 20, units = 'cm', dpi = 300)
 }
 
@@ -501,7 +502,7 @@ for (pasta in pastas) {
   
   pvout <- ggarrange(plots = list(p, p_vout_sand, p_vout_gravel, p_vout_boulder, p_vout), nrow = 5, ncol = 1)
    
-  ggsave(filename = paste0(directory, 'plots_sed_budget-silt/sed_bud_', ano, '.tiff'),
+  ggsave(filename = paste0(save_directory, 'plots_sed_budget-silt/sed_bud_', ano, '.png'),
          plot = pvout, width = 16, height = 20, units = 'cm', dpi = 300)
 }
 
