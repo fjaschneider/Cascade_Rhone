@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Cascade Rhône River catchment</title>
+  <meta name="description" content="Cascade Rhône River catchment" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Cascade Rhône River catchment" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Cascade Rhône River catchment" />
+  
+  
+  
+
+<meta name="author" content="Fabio Schneider" />
+
+
+<meta name="date" content="2025-07-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="result.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>1</b> Methods</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="methods.html"><a href="methods.html#study-area"><i class="fa fa-check"></i><b>1.1</b> Study area</a></li>
+<li class="chapter" data-level="1.2" data-path="methods.html"><a href="methods.html#cascade-model-data-input"><i class="fa fa-check"></i><b>1.2</b> Cascade Model Data Input</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="methods.html"><a href="methods.html#number-of-reaches"><i class="fa fa-check"></i><b>1.2.1</b> Number of Reaches</a></li>
+<li class="chapter" data-level="1.2.2" data-path="methods.html"><a href="methods.html#elevation-and-slope-data-smoothed"><i class="fa fa-check"></i><b>1.2.2</b> Elevation and Slope data smoothed</a></li>
+<li class="chapter" data-level="1.2.3" data-path="methods.html"><a href="methods.html#channel-width-and-mannings-coefficient"><i class="fa fa-check"></i><b>1.2.3</b> Channel width and Manning’s coefficient</a></li>
+<li class="chapter" data-level="1.2.4" data-path="methods.html"><a href="methods.html#gsd-along-the-rhône-river"><i class="fa fa-check"></i><b>1.2.4</b> GSD along the Rhône River</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="methods.html"><a href="methods.html#discharge"><i class="fa fa-check"></i><b>1.3</b> Discharge</a></li>
+<li class="chapter" data-level="1.4" data-path="methods.html"><a href="methods.html#trap-efficiency-gill-1979"><i class="fa fa-check"></i><b>1.4</b> Trap efficiency (GILL, 1979)</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="result.html"><a href="result.html"><i class="fa fa-check"></i><b>2</b> Result</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="result.html"><a href="result.html#no-dams"><i class="fa fa-check"></i><b>2.1</b> No dams</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="result.html"><a href="result.html#wilkock-and-crowe-equation"><i class="fa fa-check"></i><b>2.1.1</b> Wilkock and Crowe equation</a></li>
+<li class="chapter" data-level="2.1.2" data-path="result.html"><a href="result.html#eugelund-and-hansen-equation"><i class="fa fa-check"></i><b>2.1.2</b> Eugelund and Hansen equation</a></li>
+<li class="chapter" data-level="2.1.3" data-path="result.html"><a href="result.html#ackers-and-white-equation"><i class="fa fa-check"></i><b>2.1.3</b> Ackers and White equation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="result.html"><a href="result.html#trap-efficiency-table-1"><i class="fa fa-check"></i><b>2.2</b> Trap efficiency (Table 1)</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="result.html"><a href="result.html#wilkock-and-crowe-equation-1"><i class="fa fa-check"></i><b>2.2.1</b> Wilkock and Crowe equation</a></li>
+<li class="chapter" data-level="2.2.2" data-path="result.html"><a href="result.html#eugelund-and-hansen-equation-1"><i class="fa fa-check"></i><b>2.2.2</b> Eugelund and Hansen equation</a></li>
+<li class="chapter" data-level="2.2.3" data-path="result.html"><a href="result.html#ackers-and-white-equation-1"><i class="fa fa-check"></i><b>2.2.3</b> Ackers and White equation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="result.html"><a href="result.html#trap-efficiency"><i class="fa fa-check"></i><b>2.3</b> 100% Trap efficiency</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="result.html"><a href="result.html#wilkock-and-crowe-equation-2"><i class="fa fa-check"></i><b>2.3.1</b> Wilkock and Crowe equation</a></li>
+<li class="chapter" data-level="2.3.2" data-path="result.html"><a href="result.html#eugelund-and-hansen-equation-2"><i class="fa fa-check"></i><b>2.3.2</b> Eugelund and Hansen equation</a></li>
+<li class="chapter" data-level="2.3.3" data-path="result.html"><a href="result.html#ackers-and-white-equation-2"><i class="fa fa-check"></i><b>2.3.3</b> Ackers and White equation</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Cascade Rhône River catchment</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Cascade Rhône River catchment</h1>
+<p class="author"><em>Fabio Schneider</em></p>
+<p class="date"><em>2025-07-11</em></p>
+</div>
+<div id="methods" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> Methods<a href="methods.html#methods" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="study-area" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Study area<a href="methods.html#study-area" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Located in the South-West of Switzerland and South-East of France the Rhône River flows trough 800 km, where ~525 km in French territory. The Rhône River catchment is the most important source of hydropower in France. It covers an area of approximately 97800 km2, of which 87400 km2 (about 90%) lies within French territory (Figure <a href="methods.html#fig:local">1.1</a>). In this study, we simulated the bedload connectivity along the main Rhône River within French territory.</p>
+<div class="figure"><span style="display:block;" id="fig:local"></span>
+<img src="img/local_mapa.png" alt="Location of the Rhône River catchment with the main dams along the river." width="1240" />
+<p class="caption">
+Figure 1.1: Location of the Rhône River catchment with the main dams along the river.
+</p>
+</div>
+<p>Grain size distribution (GSD) data and bedload measurements in rivers are often scarce or absent, making bedload modeling challenging. For this reason, we chose to model the bedload connectivity along the Rhône River rather than in its tributaries, where data availability even more limited.</p>
+</div>
+<div id="cascade-model-data-input" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Cascade Model Data Input<a href="methods.html#cascade-model-data-input" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The Cascade model is an expert-based model that uses geomorphological river characteristics to simulate bedload transport capacity.</p>
+<p>To characterize the geomorfological properties of the river, the dataset must include information for each river reach.</p>
+<div id="number-of-reaches" class="section level3 hasAnchor" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> Number of Reaches<a href="methods.html#number-of-reaches" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To prepare the input data for the Cascade model, the river reaches were modified to incorporate the reservoirs associated with each dam. The previous dataset contained 195 reaches, after the adjustments, we updated dataset includes a total of 67 reaches.</p>
+<p>We adapted the number of reaches by summarizing those with similar geomorphological characteristics by integrating all reaches contained within each dam reservoir. Figure <a href="methods.html#fig:reaches">1.2</a> shows the integration of the reaches within the Génissiat Reservoir.</p>
+<div class="figure"><span style="display:block;" id="fig:reaches"></span>
+<img src="img/reach.png" alt="Integration of reaches affected by dam reservoirs" width="1560" />
+<p class="caption">
+Figure 1.2: Integration of reaches affected by dam reservoirs
+</p>
+</div>
+</div>
+<div id="elevation-and-slope-data-smoothed" class="section level3 hasAnchor" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> Elevation and Slope data smoothed<a href="methods.html#elevation-and-slope-data-smoothed" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To remove the effect of dams on elevation and slope along the Rhône River, we smoothed the elevation profile to approximate as closely as possible the natural river slope, without influence of dam reservoirs. The resulting smoothed elevation profile is show in Figure <a href="methods.html#fig:elev">1.3</a>. Figure <a href="methods.html#fig:slope">1.4</a> shows the slope for each river reach based on the smoothed elevation profile. The slope in the upper part of the Rhône River is steeper, while downstream of the Génissiat Dam, the slope becomes more gradual and remains relatively uniform until the catchment outlet.</p>
+<div class="figure"><span style="display:block;" id="fig:elev"></span>
+<img src="main_files/figure-html/elev-1.png" alt="Comparision between the original and smoothed elevation profile of the Rhône River." width="3500" />
+<p class="caption">
+Figure 1.3: Comparision between the original and smoothed elevation profile of the Rhône River.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:slope"></span>
+<img src="main_files/figure-html/slope-1.png" alt="Longitudinal slope profile of the Rhône River derived from the smoothed elevation data." width="3500" />
+<p class="caption">
+Figure 1.4: Longitudinal slope profile of the Rhône River derived from the smoothed elevation data.
+</p>
+</div>
+</div>
+<div id="channel-width-and-mannings-coefficient" class="section level3 hasAnchor" number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> Channel width and Manning’s coefficient<a href="methods.html#channel-width-and-mannings-coefficient" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Figure <a href="methods.html#fig:wac">1.5</a> shows the channel width, and Figure <a href="methods.html#fig:n">1.6</a> shows the Manning’s coefficient for each river reach along the Rhône River. Figure <a href="methods.html#fig:basemaps">1.7</a> shows the longitudinal variation of Manning’s coefficient, channel width, and slope along the river. Channel width tends to increase at confluences with tributaries. The Manning’s coefficient was defined as relative uniform along the Rhône River.</p>
+<div class="figure"><span style="display:block;" id="fig:wac"></span>
+<img src="main_files/figure-html/wac-1.png" alt="Channel width of each river reach along the Rhône River." width="3500" />
+<p class="caption">
+Figure 1.5: Channel width of each river reach along the Rhône River.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:n"></span>
+<img src="main_files/figure-html/n-1.png" alt="Manning’s coefficient of each river reach along the Rhône River." width="3500" />
+<p class="caption">
+Figure 1.6: Manning’s coefficient of each river reach along the Rhône River.
+</p>
+</div>
+<div class="figure"><span style="display:block;" id="fig:basemaps"></span>
+<img src="img/base_maps.png" alt="Longitudinal Manning’s coefficient, slope, and channel width along the Rhône River." width="1240" />
+<p class="caption">
+Figure 1.7: Longitudinal Manning’s coefficient, slope, and channel width along the Rhône River.
+</p>
+</div>
+</div>
+<div id="gsd-along-the-rhône-river" class="section level3 hasAnchor" number="1.2.4">
+<h3><span class="header-section-number">1.2.4</span> GSD along the Rhône River<a href="methods.html#gsd-along-the-rhône-river" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The grain size distribution (GSD) was obtained from the data available in the report by Parrot et al. (2021), Annexe 17: Données statistiques (D16, D50, D84, D90) des prélèvements réalisés par dragage avec la CNR dans le chenal du Rhône (campagnes 2012-13). The Figure <a href="methods.html#fig:gsd">1.8</a> shows the data measured data (black bars) and the linearly estimated values (brown bars) for each river reach along the Rhône River.</p>
+<p>For the reaches with more than one GSD value, the highest value observed for each GSD class was used. For the reaches without GSD data, values were linearly interpolated from neighboring reaches with available data.</p>
+<div class="figure"><span style="display:block;" id="fig:gsd"></span>
+<img src="main_files/figure-html/gsd-1.png" alt="Grain Size Distribution (GSD) measured and estimated of the bed material along the Rhône River for each river reach." width="3500" />
+<p class="caption">
+Figure 1.8: Grain Size Distribution (GSD) measured and estimated of the bed material along the Rhône River for each river reach.
+</p>
+</div>
+</div>
+</div>
+<div id="discharge" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Discharge<a href="methods.html#discharge" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The discharge was obtained by the J2000 model. For each river reach of Cascade input model we selected the closer river reach of the J2000 model. Therefore, the discharge for along the Rhône River is swhowed in the Figure <a href="#fig:q"><strong>??</strong></a></p>
+</div>
+<div id="trap-efficiency-gill-1979" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Trap efficiency (GILL, 1979)<a href="methods.html#trap-efficiency-gill-1979" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Trap efficiency was estimated by the ratio of reservoir capacity (<em>C</em>) to catchment area (<em>A</em>). This relationship was proposed by Brown (1944), who presented the following Equation <a href="methods.html#eq:E">(1.1)</a>:</p>
+<p><span class="math display" id="eq:E">\[\begin{equation}
+  E = 1 - \frac{1}{1 + k \cdot \frac{C}{A}}
+  \tag{1.1}
+\end{equation}\]</span></p>
+<p>Where:</p>
+<ul>
+<li><em>C</em> is the reservoir capacity (acre-feet)<br />
+</li>
+<li><em>A</em> is the catchment area (mi²)<br />
+</li>
+<li><em>E</em> is the trap efficiency<br />
+</li>
+<li><em>k</em> is a coefficient that varies according to sediment grain size</li>
+</ul>
+<p>The recommended values of <em>k</em> are:
+- 1.0 for coarse sediments<br />
+- 0.1 for medium sediments<br />
+- 0.046 for fine sediments</p>
+<p>Equation <a href="methods.html#eq:Em">(1.2)</a> presents the same relationship using metric units:</p>
+<p><span class="math display" id="eq:Em">\[\begin{equation}
+  E = 1 - \frac{1}{1 + 0.0021 \cdot k \cdot \frac{C}{A}}
+  \tag{1.2}
+\end{equation}\]</span></p>
+<p>The <em>C/A</em> ratio provides a simple method for estimating trap efficiency. However, it is important to recognize that sediment trapping is a much more complex process than what is represented by the equations described above. Despite this simplification, the method remains useful, particularly for dams with limited available data.</p>
+<p>Therefore, in the Rhône catchment, Equation <a href="methods.html#eq:Em">(1.2)</a> was applied to estimate the trap efficiency for the dams located along the main river.</p>
+<p><strong>Table 1</strong> presents the trap efficiency (<em>E</em>) values for fine, medium, and coarse sediments at each dam on the Rhône River.</p>
+<p><strong>Table 1 – Trap efficiency (E) for fine, medium, and coarse sediments at each dam located on the Rhône River, including values estimated by similarity.</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col width="20%" />
+<col width="11%" />
+<col width="8%" />
+<col width="19%" />
+<col width="21%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dam</th>
+<th>C (m³)</th>
+<th>A (km²)</th>
+<th>Fine (&lt; 0.062 mm)</th>
+<th>Medium (0.062–2 mm)</th>
+<th>Coarse (&gt; 2 mm)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Verbois</td>
+<td></td>
+<td></td>
+<td>0.12</td>
+<td>0.22</td>
+<td>0.74</td>
+</tr>
+<tr class="even">
+<td>Chancy Pougny</td>
+<td>14000000</td>
+<td>10294</td>
+<td>0.12</td>
+<td>0.22</td>
+<td>0.74</td>
+</tr>
+<tr class="odd">
+<td>Génissiat</td>
+<td>72000000</td>
+<td>10910</td>
+<td>0.39</td>
+<td>0.58</td>
+<td>0.93</td>
+</tr>
+<tr class="even">
+<td>Seyssel</td>
+<td>7600000</td>
+<td>11300</td>
+<td>0.06</td>
+<td>0.12</td>
+<td>0.59</td>
+</tr>
+<tr class="odd">
+<td>Chautagne</td>
+<td></td>
+<td>12700</td>
+<td>0.21</td>
+<td>0.37</td>
+<td>0.85</td>
+</tr>
+<tr class="even">
+<td>Belley</td>
+<td></td>
+<td>12985</td>
+<td>0.21</td>
+<td>0.37</td>
+<td>0.85</td>
+</tr>
+<tr class="odd">
+<td>Brégnier-Cordon</td>
+<td></td>
+<td>14000</td>
+<td>0.21</td>
+<td>0.37</td>
+<td>0.85</td>
+</tr>
+<tr class="even">
+<td>Sault-Brénaz</td>
+<td></td>
+<td>15380</td>
+<td>0.21</td>
+<td>0.37</td>
+<td>0.85</td>
+</tr>
+<tr class="odd">
+<td>Jons</td>
+<td>55000000</td>
+<td>20000</td>
+<td>0.21</td>
+<td>0.37</td>
+<td>0.85</td>
+</tr>
+<tr class="even">
+<td>Pierre Bénite</td>
+<td></td>
+<td>50400</td>
+<td>0.21</td>
+<td>0.37</td>
+<td>0.85</td>
+</tr>
+<tr class="odd">
+<td>Vaugris</td>
+<td>41000000</td>
+<td>51700</td>
+<td>0.07</td>
+<td>0.14</td>
+<td>0.62</td>
+</tr>
+<tr class="even">
+<td>Péage de Roussillon</td>
+<td></td>
+<td>52880</td>
+<td>0.21</td>
+<td>0.37</td>
+<td>0.85</td>
+</tr>
+<tr class="odd">
+<td>Saint Valiier</td>
+<td></td>
+<td>53850</td>
+<td>0.21</td>
+<td>0.37</td>
+<td>0.85</td>
+</tr>
+<tr class="even">
+<td>Bourg-lès Valences</td>
+<td></td>
+<td>66450</td>
+<td>0.21</td>
+<td>0.37</td>
+<td>0.85</td>
+</tr>
+<tr class="odd">
+<td>Beauchastel</td>
+<td></td>
+<td>66700</td>
+<td>0.21</td>
+<td>0.37</td>
+<td>0.85</td>
+</tr>
+<tr class="even">
+<td>Baix-le Logis Neuf</td>
+<td></td>
+<td>69960</td>
+<td>0.21</td>
+<td>0.37</td>
+<td>0.85</td>
+</tr>
+<tr class="odd">
+<td>Montélimar</td>
+<td></td>
+<td>70900</td>
+<td>0.21</td>
+<td>0.37</td>
+<td>0.85</td>
+</tr>
+<tr class="even">
+<td>Donzère-Mondragon</td>
+<td>27000000</td>
+<td>71000</td>
+<td>0.04</td>
+<td>0.07</td>
+<td>0.44</td>
+</tr>
+<tr class="odd">
+<td>Caderousse</td>
+<td>123000</td>
+<td></td>
+<td>0.07</td>
+<td>0.14</td>
+<td>0.62</td>
+</tr>
+<tr class="even">
+<td>Avignon</td>
+<td></td>
+<td></td>
+<td>0.04</td>
+<td>0.07</td>
+<td>0.44</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Where:</strong><br />
+- <code>C</code> is the reservoir capacity (m³)<br />
+- <code>A</code> is the catchment area (km²)<br />
+- Trap efficiency values highlighted in yellow in the original source were estimated by similarity.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="result.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": false,
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

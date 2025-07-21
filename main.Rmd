@@ -3,12 +3,9 @@ title: "Cascade Rhône River catchment"
 author: "Fabio Schneider"
 date: "2025-07-11"
 output:
-  bookdown::html_document2:
-    toc: true
-    toc_depth: 3
-    toc_float: true
-    toc_title: true
-    number_sections: true
+  bookdown::gitbook:
+    highlight: tango
+
 ---
 
 ```{r setup, include=FALSE}
@@ -472,7 +469,7 @@ p_GSD <- ggarrange(plots = list(plt_elev_gsd, p_D16, p_D50, p_D84), nrow = 4, nc
 
 
 ```{r, echo=FALSE, warning=FALSE}
-
+# 
 # # Get discharge values
 # library(dplyr)
 # library(lubridate)
@@ -494,7 +491,7 @@ p_GSD <- ggarrange(plots = list(plt_elev_gsd, p_D16, p_D50, p_D84), nrow = 4, nc
 #   # conversion de tyes sur les colonnes
 #   # transformer la colonne Date en format Date
 #   DataReach$Date<-as.Date(DataReach$Date)
-#   
+# 
 #   #on peut maintenant extraire selon les dates voulues
 #   # je crée une séquence de dates journalière entre les dates de début et fin voulues avec seq.Date
 #   DataReach<-subset(DataReach, DataReach$Date %in% seq.Date(from=as.Date(startdate),to = as.Date(enddate),by="day"))
@@ -509,7 +506,7 @@ p_GSD <- ggarrange(plots = list(plt_elev_gsd, p_D16, p_D50, p_D84), nrow = 4, nc
 # 
 # j2k_list <- ids$ReachID
 # 
-# start_date <- as.Date("2009-01-01") # select start date
+# start_date <- as.Date("1999-01-01") # select start date
 # end_date <- as.Date("2019-12-31") # select end date
 # dates <- seq(start_date, end_date, by = "day")
 # 
@@ -522,7 +519,7 @@ p_GSD <- ggarrange(plots = list(plt_elev_gsd, p_D16, p_D50, p_D84), nrow = 4, nc
 #   runoff <- ExtractReach(
 #     data = ReachDataOSR6,
 #     reachID = reach_id,
-#     startdate ="2009-01-01",
+#     startdate ="1999-01-01",
 #     enddate= "2019-12-31" )
 # 
 #     if (is.data.frame(runoff)) {
@@ -535,7 +532,7 @@ p_GSD <- ggarrange(plots = list(plt_elev_gsd, p_D16, p_D50, p_D84), nrow = 4, nc
 # 
 # colnames(df_discharge) <- c("yyyy/mm/dd", 1:67)
 # 
-# write.csv(df_discharge, "data_rhone/Tables/discharge_rhone_2009-2019.csv", row.names = F)
+# write.csv(df_discharge, "data_rhone/Tables/discharge_rhone_1999-2019.csv", row.names = F)
 
 ```
 
@@ -571,7 +568,29 @@ p_GSD <- ggarrange(plots = list(plt_elev_gsd, p_D16, p_D50, p_D84), nrow = 4, nc
 # write.csv(dfq_hy_2017, 'data_rhone/Tables/discharge_hy/dfq_hy_2017.csv', row.names = F)
 # write.csv(dfq_hy_2018, 'data_rhone/Tables/discharge_hy/dfq_hy_2018.csv', row.names = F)
 # write.csv(dfq_hy_2019, 'data_rhone/Tables/discharge_hy/dfq_hy_2019.csv', row.names = F)
-
+# 
+# df_discharge_1999 <- df_discharge[df_discharge$`yyyy/mm/dd`< '1999-09-21',]
+# df_discharge_2000 <- df_discharge[df_discharge$`yyyy/mm/dd`>= '1999-09-21' & df_discharge$`yyyy/mm/dd`<'2000-09-21',]
+# df_discharge_2001 <- df_discharge[df_discharge$`yyyy/mm/dd`>= '2000-09-21' & df_discharge$`yyyy/mm/dd`<'2001-09-21',]
+# df_discharge_2002 <- df_discharge[df_discharge$`yyyy/mm/dd`>= '2001-09-21' & df_discharge$`yyyy/mm/dd`<'2002-09-21',]
+# df_discharge_2003 <- df_discharge[df_discharge$`yyyy/mm/dd`>= '2002-09-21' & df_discharge$`yyyy/mm/dd`<'2003-09-21',]
+# df_discharge_2004 <- df_discharge[df_discharge$`yyyy/mm/dd`>= '2003-09-21' & df_discharge$`yyyy/mm/dd`<'2004-09-21',]
+# df_discharge_2005 <- df_discharge[df_discharge$`yyyy/mm/dd`>= '2004-09-21' & df_discharge$`yyyy/mm/dd`<'2005-09-21',]
+# df_discharge_2006 <- df_discharge[df_discharge$`yyyy/mm/dd`>= '2005-09-21' & df_discharge$`yyyy/mm/dd`<'2006-09-21',]
+# df_discharge_2007 <- df_discharge[df_discharge$`yyyy/mm/dd`>= '2006-09-21' & df_discharge$`yyyy/mm/dd`<'2007-09-21',]
+# df_discharge_2008 <- df_discharge[df_discharge$`yyyy/mm/dd`>= '2007-09-21' & df_discharge$`yyyy/mm/dd`<'2008-09-21',]
+# df_discharge_2009 <- df_discharge[df_discharge$`yyyy/mm/dd`>= '2008-09-21' & df_discharge$`yyyy/mm/dd`<'2009-09-21',]
+# 
+# write.csv(df_discharge_2000, 'data_rhone/Tables/discharge_hy/dfq_hy_2000.csv', row.names = F)
+# write.csv(df_discharge_2001, 'data_rhone/Tables/discharge_hy/dfq_hy_2001.csv', row.names = F)
+# write.csv(df_discharge_2002, 'data_rhone/Tables/discharge_hy/dfq_hy_2002.csv', row.names = F)
+# write.csv(df_discharge_2003, 'data_rhone/Tables/discharge_hy/dfq_hy_2003.csv', row.names = F)
+# write.csv(df_discharge_2004, 'data_rhone/Tables/discharge_hy/dfq_hy_2004.csv', row.names = F)
+# write.csv(df_discharge_2005, 'data_rhone/Tables/discharge_hy/dfq_hy_2005.csv', row.names = F)
+# write.csv(df_discharge_2006, 'data_rhone/Tables/discharge_hy/dfq_hy_2006.csv', row.names = F)
+# write.csv(df_discharge_2007, 'data_rhone/Tables/discharge_hy/dfq_hy_2007.csv', row.names = F)
+# write.csv(df_discharge_2008, 'data_rhone/Tables/discharge_hy/dfq_hy_2008.csv', row.names = F)
+# write.csv(df_discharge_2009, 'data_rhone/Tables/discharge_hy/dfq_hy_2009.csv', row.names = F)
 
 ```
 
@@ -628,11 +647,12 @@ ggplot(df_q_long) +
 ## Trap efficiency (GILL, 1979)
 
 
-Trap efficiency was estimated by the ratio of reservoir capacity (*C*) to catchment area (*A*). This relationship was proposed by Brown (1944), who presented the following Equation (1):
+Trap efficiency was estimated by the ratio of reservoir capacity (*C*) to catchment area (*A*). This relationship was proposed by Brown (1944), who presented the following Equation \@ref(eq:E):
 
-$$
-E = 1 - \frac{1}{1 + k \cdot \frac{C}{A}} \tag{1}
-$$
+\begin{equation}
+  E = 1 - \frac{1}{1 + k \cdot \frac{C}{A}}
+  (\#eq:E)
+\end{equation}
 
 Where:
 
@@ -646,15 +666,16 @@ The recommended values of *k* are:
 - 0.1 for medium sediments  
 - 0.046 for fine sediments  
 
-Equation (2) presents the same relationship using metric units:
+Equation \@ref(eq:Em) presents the same relationship using metric units:
 
-$$
-E = 1 - \frac{1}{1 + 0.0021 \cdot k \cdot \frac{C}{A}} \tag{2}
-$$
+\begin{equation}
+  E = 1 - \frac{1}{1 + 0.0021 \cdot k \cdot \frac{C}{A}}
+  (\#eq:Em)
+\end{equation}
 
 The *C/A* ratio provides a simple method for estimating trap efficiency. However, it is important to recognize that sediment trapping is a much more complex process than what is represented by the equations described above. Despite this simplification, the method remains useful, particularly for dams with limited available data.
 
-Therefore, in the Rhône catchment, Equation (2) was applied to estimate the trap efficiency for the dams located along the main river.
+Therefore, in the Rhône catchment, Equation \@ref(eq:Em) was applied to estimate the trap efficiency for the dams located along the main river.
 
 **Table 1** presents the trap efficiency (*E*) values for fine, medium, and coarse sediments at each dam on the Rhône River.
 
