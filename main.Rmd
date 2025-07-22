@@ -597,51 +597,151 @@ p_GSD <- ggarrange(plots = list(plt_elev_gsd, p_D16, p_D50, p_D84), nrow = 4, nc
 
 The discharge was obtained by the J2000 model. For each river reach of Cascade input model we selected the closer river reach of the J2000 model. Therefore, the discharge for along the Rhône River is swhowed in the Figure \@ref(fig:q)
 
-```{r q, fig.cap= 'Manning’s coefficient of each river reach along the Rhône River.', fig.height=4, fig.width=7, fig.dpi=500, echo=FALSE, warning=FALSE, include=FALSE}
+```{r q, fig.cap= 'Manning’s coefficient of each river reach along the Rhône River.', echo=FALSE, warning=FALSE, include=TRUE}
 
 # Discharge main Rhone River
-df_discharge <- read.csv("data_rhone/Tables/discharge_rhone_2009-2019.csv")
+df_discharge <- read.csv("data_rhone/Tables/discharge_rhone_1999-2019.csv")
 colnames(df_discharge) <- c("Date",1:67)
 
 df_q_long <- read.csv("data_rhone/Tables/hydrological_year_statistics_long.csv")
 df_q_long <- df_q_long[!is.na(df_q_long$runoff),]
 df_q_long <- df_q_long[df_q_long$reach_ID < 68,]
+df_q_long <- df_q_long[df_q_long$HY != "Total",]
 
-ggplot(df_q_long) +
-  geom_line(aes(reach_ID, runoff, colour = Stat), lwd = 0.5) +
-  facet_wrap(~HY)
-  
 
-# p_q <- ggplot(shp) +
-#     geom_line(aes(FromN, Qmean, colour = 'blue4'), lwd = 0.5) +
-#     geom_text(aes(max(FromN), max(Qmean), label = 'Q mean'), vjust = 1, hjust = 0.2, size = 2) +
-#     geom_line(aes(FromN, Qmin, colour = 'blue4'), lwd = 0.3, linetype = 5) +
-#     geom_text(aes(max(FromN), max(Qmin), label = 'Q min'), vjust = 1, hjust = 0.2, size = 2) +
-#     geom_line(aes(FromN, Qmax, colour = 'blue4'), lwd = 0.3, linetype = 5) +
-#     geom_text(aes(max(FromN), max(Qmax), label = 'Q max'), vjust = 1, hjust = 0.2, size = 2) +
-#     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
-#     geom_text(aes(FromN, altitude, label = Dam), angle = 90, vjust = -0.2, hjust = 1, size = 2, y = Inf) +
-#     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = Qmean+(max(Qmax)*0.2), yend = Qmean, colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
-#     geom_text(data = l_trib, aes(FromN, Qmean+(max(Qmax)*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
-#     scale_y_continuous(name = expression('Discharge (m'^3~'.s'^-1~')'), n.breaks = 10, expand = expansion(c(0,0.05))) +
-#     scale_x_continuous(n.breaks = 10) +
-#     scale_fill_manual(breaks = c('blue4', 'coral4', 'black', 'blue'),
-#                       values = c('blue4', 'coral4', 'black', 'blue'),
-#                       labels = c('Discharge', 'Altitude', 'Dams', 'Tributaries'), name = '') +
-#     scale_colour_manual(breaks = c('blue4', 'coral4', 'black', 'blue'),
-#                         values = c('blue4', 'coral4', 'black', 'blue'),
-#                         labels = c('Discharge', 'Altitude', 'Dams', 'Tributaries'), name = '') +
-#   labs(x = 'Reach ID') +
-#   theme_article(base_family = "Times New Roman") +
-#   geom_hline(yintercept = 0, lwd = 0.2) +
-#   theme(legend.key.height = unit(0.5, 'cm'), legend.position = 'bottom', legend.spacing = unit(0, 'cm')) +
-#   theme(text = element_text(size = 8, colour = 'black'),
-#         axis.text = element_text(size = 8, colour = 'black'))
-# p_q
+library(plotly)
+library(dplyr)
 
-# ggsave(filename = 'img/discharge.svg',, plot = p_q, width = 16, height = 8, units = 'cm', dpi = 300)
+# Valores únicos
+stats <- unique(df_q_long$Stat)
+years <- unique(df_q_long$HY)
+
+# Inicializa a figura
+fig <- plot_ly()
+
+# Adiciona os traces (um para cada Stat x HY)
+for (stat in stats) {
+  for (hy in years) {
+    df_subset <- df_q_long %>% filter(Stat == stat, HY == hy)
+    
+    fig <- fig %>%
+      add_lines(data = df_subset,
+                x = ~as.numeric(reach_ID),
+                y = ~runoff,
+                name = as.character(hy),
+                legendgroup = as.character(hy),
+                showlegend = T,
+                visible = (stat == "Min"))
+  }
+}
+
+# Quantidade de traces
+n_stats <- length(stats)
+n_years <- length(years)
+n_traces <- n_stats * n_years
+
+# Cria matriz de visibilidade para cada botão
+visibility_matrix <- lapply(1:n_stats, function(i) {
+  vis <- rep(FALSE, n_traces)
+  start_idx <- (i - 1) * n_years + 1
+  end_idx <- i * n_years
+  vis[start_idx:end_idx] <- TRUE
+  return(vis)
+})
+
+# Botões para trocar a variável
+buttons <- lapply(1:n_stats, function(i) {
+  list(
+    method = "restyle",
+    args = list("visible", visibility_matrix[[i]]),
+    label = stats[i]
+  )
+})
+
+# Layout final com updatemenus
+fig <- fig %>%
+  layout(
+    yaxis = list(title = "Runoff (m<sup>3</sup> s<sup>-1</sup>)"),
+    xaxis = list(title = "Reach ID"),
+    updatemenus = list(
+      list(
+        y = 1.1,
+        buttons = buttons,
+        direction = "down",
+        showactive = TRUE
+      )
+    )
+  )
+
+fig
+
+
 
 ```
+
+
+
+
+```{r}
+linhas_verticais <- lapply(trib$reach_ID, function(x_pos) {
+  list(
+    type = "line",
+    x0 = x_pos,
+    x1 = x_pos,
+    y0 = 0,
+    y1 = 1,  # relativo à altura do gráfico
+    xref = "x",
+    yref = "paper",  # "paper" significa que y vai de 0 a 1 no espaço do gráfico
+    line = list(color = "blue", dash = "dot", width = 1.5)
+  )
+})
+
+
+
+
+```
+
+```{r}
+fig <- fig %>%
+  layout(
+    yaxis = list(title = "Runoff (m<sup>3</sup> s<sup>-1</sup>)"),
+    xaxis = list(title = "Reach ID"),
+    shapes = linhas_verticais
+  )
+fig
+```
+
+
+```{r}
+annotacoes_rotacionadas <- lapply(1:nrow(trib), function(i) {
+  list(
+    x = trib$reach_ID[i],
+    y = 1,  # topo do gráfico
+    xref = "x",
+    yref = "paper",
+    text = trib$Trib[i],
+    showarrow = FALSE,
+    textangle = -90,  # texto rotacionado
+    font = list(size = 11, color = "blue"),
+    xanchor = "left",  # ou "right" dependendo do lado desejado
+    yanchor = "top"
+  )
+})
+
+
+```
+
+
+```{r}
+fig <- fig %>%
+  layout(
+    shapes = linhas_verticais,  # do exemplo anterior
+    annotations = annotacoes_rotacionadas
+  )
+fig
+```
+
+
 
 
 ## Trap efficiency (GILL, 1979)
