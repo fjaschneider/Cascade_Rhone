@@ -587,7 +587,7 @@ colnames(df_discharge) <- c("yyyy/mm/dd", 1:67)
 ```
 
 
-The discharge was obtained by the J2000 model. For each river reach of Cascade input model we selected the closer river reach of the J2000 model. Therefore, the discharge for along the Rhône River is swhowed in the Figure \@ref(fig:q)
+The discharge was obtained by the J2000 model. For each river reach of Cascade input model we selected the closer river reach of the J2000 model. Therefore, the discharge for along the Rhône River is swhowed in the Figure \@ref(fig:q).
 
 ```{r, echo=FALSE, warning=FALSE, include=FALSE}
 
@@ -723,7 +723,7 @@ annotacoes_rotacionadas <- lapply(1:nrow(trib), function(i) {
 ```
 
 
-```{r q, fig.cap= 'Manning’s coefficient of each river reach along the Rhône River.', warning=FALSE, echo=FALSE}
+```{r q, fig.cap= 'Discharge of each river reach along the Rhône River (2000-2019).', warning=FALSE, echo=FALSE}
 fig <- fig %>%
   layout(
     shapes = linhas_verticais,  # do exemplo anterior
