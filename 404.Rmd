@@ -1,0 +1,14 @@
+---
+title: "Preliminary Results of the Cascade Model Applied to the Rhône River Catchment"
+author: "Fabio Schneider"
+date: "2025-07-23"
+output:
+  bookdown::gitbook:
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Preliminaries results of the CASCADE model over 2000 to 2019 on the Rhone river catchment.
