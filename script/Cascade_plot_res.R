@@ -18,11 +18,11 @@ library(egg)
 #####
 ## without silt trib = arrows
 #Lista de pastas onde estão os shapefiles 
-directory <- 'k:/Labo/20_OSR/Rhone_Fabio_Schneider/Result_Cascade_21_67reaches/res_E2_eE&H/'
+directory <- 'k:/Labo/20_OSR/Rhone_Fabio_Schneider/Result_Cascade_21_67reaches/res_E3_eW&C/'
 pastas <- list.dirs(path = directory, recursive = FALSE)
-save_directory <- "img/res_cascade/res_E2_eE&H/"
+save_directory <- "img/res_cascade/res_E3_eW&C/"
 
-
+{
 ## Transport capacity
 # Loop by folders
 for (pasta in pastas) {
@@ -63,7 +63,7 @@ for (pasta in pastas) {
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = Qmean+(max(Qmax)*0.2), yend = Qmean, colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, Qmean+(max(Qmax)*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
     scale_y_continuous(name = expression('Discharge (m'^3~'.s'^-1~')'), n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       labels = c('Discharge', 'Sediment transported', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -86,7 +86,7 @@ for (pasta in pastas) {
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = ((Tr_cap_sand/1000)+(max(shp$Tr_cap_sand/1000)*0.2)), yend = (Tr_cap_sand/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, ((Tr_cap_sand/1000)+(max(shp$Tr_cap_sand/1000)*0.2)), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
     scale_y_continuous(name = 'Transport capacity - sand (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'red', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'red', 'coral4', 'black', 'blue'),
                       labels = c('Discharge', 'Transport capacity', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -111,7 +111,7 @@ for (pasta in pastas) {
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = ((Tr_cap_gravel/1000)+(max(shp$Tr_cap_gravel/1000)*0.2)), yend = (Tr_cap_gravel/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, ((Tr_cap_gravel/1000)+(max(shp$Tr_cap_gravel/1000)*0.2)), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
     scale_y_continuous(name = 'Transport capacity - gravel (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'red', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'red', 'coral4', 'black', 'blue'),
                       labels = c('Discharge', 'Transport capacity', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -136,7 +136,7 @@ for (pasta in pastas) {
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = ((Tr_cap_boulder/1000)+(max(shp$Tr_cap_boulder/1000)*0.2)), yend = (Tr_cap_boulder/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, ((Tr_cap_boulder/1000)+(max(shp$Tr_cap_boulder/1000)*0.2)), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
     scale_y_continuous(name = 'Transport capacity - boulder (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'red', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'red', 'coral4', 'black', 'blue'),
                       labels = c('Discharge', 'Transport capacity', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -162,7 +162,7 @@ for (pasta in pastas) {
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = ((sum_cls_trc)+(max(shp$sum_cls_trc)*0.2)), yend = (sum_cls_trc), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, ((sum_cls_trc)+(max(shp$sum_cls_trc)*0.2)), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
     scale_y_continuous(name = 'Transport capacity - total (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'red', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'red', 'coral4', 'black', 'blue'),
                       labels = c('Discharge', 'Transport capacity', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -180,7 +180,7 @@ for (pasta in pastas) {
   ptrc <- ggarrange(plots = list(p, p_trc_sand, p_trc_gravel, p_trc_boulder, p_trc_total), nrow = 5, ncol = 1)
   
   ggsave(filename = paste0(save_directory, 'plots_tr_cap-silt/tr_cap_', ano, '.png'),
-         plot = pvout, width = 16, height = 20, units = 'cm', dpi = 300)
+         plot = ptrc, width = 16, height = 20, units = 'cm', dpi = 300)
 }
 
 
@@ -224,7 +224,7 @@ for (pasta in pastas) {
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = Qmean+(max(Qmax)*0.2), yend = Qmean, colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, Qmean+(max(Qmax)*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
     scale_y_continuous(name = expression('Discharge (m'^3~'.s'^-1~')'), n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       labels = c('Discharge', 'Sediment transported', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -246,8 +246,8 @@ for (pasta in pastas) {
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = ((Vout_sand/1000)+(max(shp$Vout_sand/1000)*0.2)), yend = (Vout_sand/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, ((Vout_sand/1000)+(max(shp$Vout_sand/1000)*0.2)), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
-    scale_y_continuous(name = 'Sand transported (Mg)', n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_y_continuous(name = 'Sand transported (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       labels = c('Discharge', 'Sediment transported', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -271,8 +271,8 @@ for (pasta in pastas) {
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = (Vout_gravel/1000)+(max((shp$Vout_gravel/1000))*0.2), yend = (Vout_gravel/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, (Vout_gravel/1000)+(max((shp$Vout_gravel/1000))*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
-    scale_y_continuous(name = 'Gravel transported (Mg)', n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_y_continuous(name = 'Gravel transported (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       labels = c('Discharge', 'Sediment transported', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -297,7 +297,8 @@ for (pasta in pastas) {
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = (Vout_boulder/1000)+(max((shp$Vout_boulder/1000))*0.2), yend = (Vout_boulder/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, (Vout_boulder/1000)+(max((shp$Vout_boulder/1000))*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
-    scale_y_continuous(name = 'Boulder transported (Mg)', n.breaks = 10, expand = expansion(c(0,0.05))) +
+    scale_y_continuous(name = 'Boulder transported (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       labels = c('Discharge', 'Sediment transported', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -323,8 +324,8 @@ for (pasta in pastas) {
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = sum_cls_vout+(max(shp$sum_cls_vout)*0.2), yend = sum_cls_vout, colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, sum_cls_vout+(max(shp$sum_cls_vout)*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
-    scale_y_continuous(name = 'Total transported (Mg)', n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_y_continuous(name = 'Total transported (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       labels = c('Discharge', 'Sediment transported', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -386,7 +387,7 @@ for (pasta in pastas) {
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = Qmean+(max(Qmax)*0.2), yend = Qmean, colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, Qmean+(max(Qmax)*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
     scale_y_continuous(name = expression('Discharge (m'^3~'.s'^-1~')'), n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       labels = c('Discharge', 'Sediment transported', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -406,10 +407,10 @@ for (pasta in pastas) {
     geom_col(aes(FromN, Dep_sand/1000, fill = 'darkorange'), color = 1, lwd = 0.1) +
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
-    scale_y_continuous(name = 'Sand deposited (Mg)', n.breaks = 10, expand = expansion(c(0,0.05))) +
+    scale_y_continuous(name = 'Sand deposited (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = (Dep_sand/1000)+(max((shp$Dep_sand/1000))*0.2), yend = (Dep_sand/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, (Dep_sand/1000)+(max((shp$Dep_sand/1000))*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
-    scale_x_continuous(n.breaks = 10) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('darkorange', 'coral4', 'black', 'blue'),
                       values = c('darkorange', 'coral4', 'black', 'blue'),
                       labels = c('Sediment deposited', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -433,8 +434,8 @@ for (pasta in pastas) {
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = (Dep_gravel/1000)+(max((shp$Dep_gravel/1000))*0.2), yend = (Dep_gravel/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, (Dep_gravel/1000)+(max((shp$Dep_gravel/1000))*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
-    scale_y_continuous(name = 'Gravel deposited (Mg)', n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_y_continuous(name = 'Gravel deposited (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('darkorange', 'coral4', 'black', 'blue'),
                       values = c('darkorange', 'coral4', 'black', 'blue'),
                       labels = c('Sediment deposited', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -459,8 +460,8 @@ for (pasta in pastas) {
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = (Dep_boulder/1000)+(max((shp$Dep_boulder/1000))*0.2), yend = (Dep_boulder/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, (Dep_boulder/1000)+(max((shp$Dep_boulder/1000))*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
-    scale_y_continuous(name = 'Boulder deposited (Mg)', n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_y_continuous(name = 'Boulder deposited (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('darkorange', 'coral4', 'black', 'blue'),
                       values = c('darkorange', 'coral4', 'black', 'blue'),
                       labels = c('Sediment deposited', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -485,8 +486,8 @@ for (pasta in pastas) {
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = sum_cls_dep+(max(shp$sum_cls_dep)*0.2), yend = sum_cls_dep, colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, sum_cls_dep+(max(shp$sum_cls_dep)*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
-    scale_y_continuous(name = 'Total deposited (Mg)', n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_y_continuous(name = 'Total deposited (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('darkorange', 'coral4', 'black', 'blue'),
                       values = c('darkorange', 'coral4', 'black', 'blue'),
                       labels = c('Sediment deposited', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -548,7 +549,7 @@ for (pasta in pastas) {
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = Qmean+(max(Qmax)*0.2), yend = Qmean, colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, Qmean+(max(Qmax)*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
     scale_y_continuous(name = expression('Discharge (m'^3~'.s'^-1~')'), n.breaks = 10, expand = expansion(c(0,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       labels = c('Discharge', 'Sediment transported', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -569,8 +570,8 @@ for (pasta in pastas) {
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = (Sed_bud_sand/1000)+(max((shp$Sed_bud_sand/1000))*0.2), yend = (Sed_bud_sand/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, (Sed_bud_sand/1000)+(max((shp$Sed_bud_sand/1000))*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
-    scale_y_continuous(name = 'Sand budget (Mg)', n.breaks = 10, expand = expansion(c(0.05,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_y_continuous(name = 'Sand budget (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0.05,0.05))) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('orangered', 'coral4', 'black', 'blue'),
                       values = c('orangered', 'coral4', 'black', 'blue'),
                       labels = c('Sediment budget', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -594,8 +595,8 @@ for (pasta in pastas) {
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = (Sed_bud_gravel/1000)+(max((shp$Sed_bud_gravel/1000))*0.2), yend = (Sed_bud_gravel/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, (Sed_bud_gravel/1000)+(max((shp$Sed_bud_gravel/1000))*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
-    scale_y_continuous(name = 'Gravel budget (Mg)', n.breaks = 10, expand = expansion(c(0.05,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_y_continuous(name = 'Gravel budget (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0.05,0.05))) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('orangered', 'coral4', 'black', 'blue'),
                       values = c('orangered', 'coral4', 'black', 'blue'),
                       labels = c('Sediment budget', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -620,8 +621,8 @@ for (pasta in pastas) {
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = (Sed_bud_boulder/1000)+(max((shp$Sed_bud_boulder/1000))*0.2), yend = (Sed_bud_boulder/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, (Sed_bud_boulder/1000)+(max((shp$Sed_bud_boulder/1000))*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
-    scale_y_continuous(name = 'Boulder budget (Mg)', n.breaks = 10, expand = expansion(c(0.05,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_y_continuous(name = 'Boulder budget (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0.05,0.05))) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('orangered', 'coral4', 'black', 'blue'),
                       values = c('orangered', 'coral4', 'black', 'blue'),
                       labels = c('Sediment budget', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -646,8 +647,8 @@ for (pasta in pastas) {
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
     geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = sum_cls_bud+(max(shp$sum_cls_bud)*0.2), yend = sum_cls_bud, colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
     geom_text(data = l_trib, aes(FromN, sum_cls_bud+(max(shp$sum_cls_bud)*0.2), label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
-    scale_y_continuous(name = 'Budget total (Mg)', n.breaks = 10, expand = expansion(c(0.05,0.05))) +
-    scale_x_continuous(n.breaks = 10) +
+    scale_y_continuous(name = 'Budget total (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0.05,0.05))) +
+    scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('orangered', 'coral4', 'black', 'blue'),
                       values = c('orangered', 'coral4', 'black', 'blue'),
                       labels = c('Sediment budget', 'Altitude', 'Dams', 'Tributaries'), name = '') +
@@ -662,13 +663,11 @@ for (pasta in pastas) {
           axis.text = element_text(size = 8, colour = 'black')) 
   
   
-  pvout <- ggarrange(plots = list(p, p_vout_sand, p_vout_gravel, p_vout_boulder, p_vout), nrow = 5, ncol = 1)
+  pvout <- ggarrange(plots = list(p, p_vout_sand, p_vout_gravel, p_vout_boulder, p_vout), nrow = 5, ncol = 1, align = "v")
    
   ggsave(filename = paste0(save_directory, 'plots_sed_budget-silt/sed_bud_', ano, '.png'),
          plot = pvout, width = 16, height = 20, units = 'cm', dpi = 300)
 }
-
-
-
+}
 
 
