@@ -802,12 +802,19 @@ For each equation, three trap efficiency scenarios were considered: (i) no dams 
 
 Three grain size classes were used based on Krumbein's scale: sand (0.06-2 mm), gravel (2-256 mm), and boulder (>256 mm).
 
-The following figures (from Figure \@ref(fig:TrE0eW) to Figure \@ref(fig:budgetE3eA)) present the cumulative bedload transported, deposited and sediment budget over the 10-year period for each equation and trap efficiency scenario.
+The following figures (from Figure \@ref(fig:TrcE0eW) to Figure \@ref(fig:budgetE3eA)) present the cumulative bedload transported, deposited and sediment budget over the 10-year period for each equation and trap efficiency scenario.
 
 
 ## No dams
 
 ### Wilkock and Crowe equation
+
+
+```{r TrcE0eW, echo=FALSE, fig.cap='Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation without accounting dams trap efficiency.'}
+
+knitr::include_graphics("img/res_cascade/res_E0_eW&C_noDams/plots_tr_cap-silt/tr_cap_res_sum_hy_E0_eW&C_noDams.png")
+
+```
 
 
 ```{r TrE0eW, echo=FALSE, fig.cap='Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation without accounting dams trap efficiency.'}
@@ -835,6 +842,13 @@ knitr::include_graphics("img/res_cascade/res_E0_eW&C_noDams/plots_sed_budget-sil
 
 ### Eugelund and Hansen equation
 
+```{r TrcE0eE, echo=FALSE, fig.cap='Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation without accounting dams trap efficiency.'}
+
+knitr::include_graphics("img/res_cascade/res_E0_eE&H_noDams/plots_tr_cap-silt/tr_cap_res_sum_hy_E0_eE&H_noDams.png")
+
+```
+
+
 ```{r TrE0eE, echo=FALSE, fig.cap='Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation without accounting dams trap efficiency.'}
 
 knitr::include_graphics("img/res_cascade/res_E0_eE&H_noDams/plots_transp-silt/transp_res_sum_hy_E0_eE&H_noDams.png")
@@ -860,6 +874,14 @@ knitr::include_graphics("img/res_cascade/res_E0_eE&H_noDams/plots_sed_budget-sil
 
 
 ### Ackers and White equation
+
+```{r TrcE0eA, echo=FALSE, fig.cap='Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.'}
+
+knitr::include_graphics("img/res_cascade/res_E0_eA&W_noDams/plots_tr_cap-silt/tr_cap_res_sum_hy_E0_eA&W_noDams.png")
+
+```
+
+
 
 ```{r TrE0eA, echo=FALSE, fig.cap='Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.'}
 
@@ -889,6 +911,12 @@ knitr::include_graphics("img/res_cascade/res_E0_eA&W_noDams/plots_sed_budget-sil
 
 ### Wilkock and Crowe equation
 
+```{r TrcE2eW, echo=FALSE, fig.cap='Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation accounting dams trap efficiency of Table 1.'}
+
+knitr::include_graphics("img/res_cascade/res_E2_eW&C/plots_tr_cap-silt/tr_cap_res_sum_hy_E2_eW&C.png")
+
+```
+
 
 ```{r TrE2eW, echo=FALSE, fig.cap='Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation accounting dams trap efficiency of Table 1.'}
 
@@ -914,6 +942,13 @@ knitr::include_graphics("img/res_cascade/res_E2_eW&C/plots_sed_budget-silt/sed_b
 
 
 ### Eugelund and Hansen equation
+
+```{r TrcE2eE, echo=FALSE, fig.cap='Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation accounting dams trap efficiency of Table 1.'}
+
+knitr::include_graphics("img/res_cascade/res_E2_eE&H/plots_tr_cap-silt/tr_cap_res_sum_hy_E2_eE&H.png")
+
+```
+
 
 ```{r TrE2eE, echo=FALSE, fig.cap='Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation accounting dams trap efficiency of Table 1.'}
 
@@ -941,7 +976,15 @@ knitr::include_graphics("img/res_cascade/res_E2_eE&H/plots_sed_budget-silt/sed_b
 
 ### Ackers and White equation
 
-```{r TrE2eA, echo=FALSE, fig.cap='Cumulative discharge and bedload deposited for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.'}
+```{r TrcE2eA, echo=FALSE, fig.cap='Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.'}
+
+knitr::include_graphics("img/res_cascade/res_E2_eA&W/plots_tr_cap-silt/tr_cap_res_sum_hy_E2_eA&W.png")
+
+```
+
+
+
+```{r TrE2eA, echo=FALSE, fig.cap='Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.'}
 
 knitr::include_graphics("img/res_cascade/res_E2_eA&W/plots_transp-silt/transp_res_sum_hy_E2_eA&W.png")
 
@@ -970,6 +1013,12 @@ knitr::include_graphics("img/res_cascade/res_E2_eA&W/plots_sed_budget-silt/sed_b
 
 ### Wilkock and Crowe equation
 
+```{r TrcE3eW, echo=FALSE, fig.cap='Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation accounting dams trap efficiency of 100%.'}
+
+knitr::include_graphics("img/res_cascade/res_E3_eW&C/plots_tr_cap-silt/tr_cap_res_sum_hy_E3_eW&C.png")
+
+```
+
 
 ```{r TrE3eW, echo=FALSE, fig.cap='Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation accounting dams trap efficiency of 100%.'}
 
@@ -996,6 +1045,13 @@ knitr::include_graphics("img/res_cascade/res_E3_eW&C/plots_sed_budget-silt/sed_b
 
 ### Eugelund and Hansen equation
 
+```{r TrcE3eE, echo=FALSE, fig.cap='Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation accounting dams trap efficiency of 100%.'}
+
+knitr::include_graphics("img/res_cascade/res_E3_eE&H/plots_tr_cap-silt/tr_cap_res_sum_hy_E3_eE&H.png")
+
+```
+
+
 ```{r TrE3eE, echo=FALSE, fig.cap='Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation accounting dams trap efficiency of 100%.'}
 
 knitr::include_graphics("img/res_cascade/res_E3_eE&H/plots_transp-silt/transp_res_sum_hy_E3_eE&H.png")
@@ -1021,6 +1077,13 @@ knitr::include_graphics("img/res_cascade/res_E3_eE&H/plots_sed_budget-silt/sed_b
 
 
 ### Ackers and White equation
+
+```{r TrcE3eA, echo=FALSE, fig.cap='Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation accounting dams trap efficiency of 100%.'}
+
+knitr::include_graphics("img/res_cascade/res_E3_eA&W/plots_tr_cap-silt/tr_cap_res_sum_hy_E3_eA&W.png")
+
+```
+
 
 ```{r TrE3eA, echo=FALSE, fig.cap='Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation accounting dams trap efficiency of 100%.'}
 
