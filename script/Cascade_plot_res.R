@@ -19,7 +19,7 @@ library(egg)
 ## without silt trib = arrows
 #Lista de pastas onde estão os shapefiles 
 
-ref <- '0_eW&C_noDams'
+ref <- '3_eA&W'
 
 directory <- paste0('k:/Labo/20_OSR/Rhone_Fabio_Schneider/Result_Cascade_21_67reaches/res_E', ref, '/')
 pastas <- list.dirs(path = directory, recursive = FALSE)
@@ -31,30 +31,30 @@ save_directory <- paste0('img/res_cascade/res_E', ref, '/')
 ## Transport capacity
 # Loop by folders
 for (pasta in pastas) {
-  
+
   # Tenta encontrar o shapefile na pasta (assumindo que tem só um ou padrão)
   arquivo_shp <- list.files(pasta, pattern = "\\.gpkg$", full.names = TRUE)
-  
+
   if (length(arquivo_shp) == 0) {
     message(paste("Nenhum shapefile encontrado na pasta:", pasta))
     next
   }
-  
+
   # Lê o shapefile
   shp <- st_read(arquivo_shp[1])
-  
+
   shp$sum_cls_trc <- (shp$Tr_cap_boulder+shp$Tr_cap_gravel+shp$Tr_cap_sand)/1000
-  
+
   l_dams <- shp[!is.na(shp$Dam),]
   l_trib <- shp[!is.na(shp$Trib),]
-  
+
   # Nome do ano (assumindo que o nome da pasta tem o ano, adapte se necessário)
   ano <- basename(pasta)
-  
-  
+
+
   ### Transport capacity ###
   # ggarange
-  
+
   # discharge
   p <- ggplot(shp) +
     geom_line(aes(FromN, Qmean, colour = 'blue4'), lwd = 0.5) +
@@ -80,9 +80,9 @@ for (pasta in pastas) {
     theme(legend.key.height = unit(0.5, 'cm'), legend.position = 'none', legend.spacing = unit(0, 'cm')) +
     theme(text = element_text(size = 8, colour = 'black'),
           axis.text = element_text(size = 8, colour = 'black'),
-          axis.text.x = element_blank(), axis.title.x = element_blank()) 
-  
-  
+          axis.text.x = element_blank(), axis.title.x = element_blank())
+
+
   # Trcap Sand
   p_trc_sand <- ggplot(shp) +
     geom_col(aes(FromN, Tr_cap_sand/1000, fill = 'red'), color = 1, lwd = 0.1) +
@@ -105,9 +105,9 @@ for (pasta in pastas) {
     theme(text = element_text(size = 8, colour = 'black'),
           axis.text = element_text(size = 8, colour = 'black'),
           axis.text.x = element_blank(), axis.title.x = element_blank())
-  
-  
-  
+
+
+
   # Trcap gravel
   p_trc_gravel <- ggplot(shp) +
     geom_col(aes(FromN, Tr_cap_gravel/1000, fill = 'red'), color = 1, lwd = 0.1) +
@@ -130,9 +130,9 @@ for (pasta in pastas) {
     theme(text = element_text(size = 8, colour = 'black'),
           axis.text = element_text(size = 8, colour = 'black'),
           axis.text.x = element_blank(), axis.title.x = element_blank())
-  
-  
-  
+
+
+
   # Trcap boulder
   p_trc_boulder <- ggplot(shp) +
     geom_col(aes(FromN, Tr_cap_boulder/1000, fill = 'red'), color = 1, lwd = 0.1) +
@@ -155,10 +155,10 @@ for (pasta in pastas) {
     theme(text = element_text(size = 8, colour = 'black'),
           axis.text = element_text(size = 8, colour = 'black'),
           axis.text.x = element_blank(), axis.title.x = element_blank())
-  
-  
-  
-  
+
+
+
+
   # Trcap total
   p_trc_total <- ggplot(shp) +
     geom_col(aes(FromN, sum_cls_trc, fill = 'red'), color = 1, lwd = 0.1) +
@@ -179,11 +179,11 @@ for (pasta in pastas) {
     geom_hline(yintercept = 0, lwd = 0.2) +
     theme(legend.key.height = unit(0.5, 'cm'), legend.position = 'bottom', legend.spacing = unit(0, 'cm'), legend.text = element_text(size = 8)) +
     theme(text = element_text(size = 8, colour = 'black'),
-          axis.text = element_text(size = 8, colour = 'black')) 
-  
-  
+          axis.text = element_text(size = 8, colour = 'black'))
+
+
   ptrc <- ggarrange(plots = list(p, p_trc_sand, p_trc_gravel, p_trc_boulder, p_trc_total), nrow = 5, ncol = 1)
-  
+
   ggsave(filename = paste0(directory, 'plots_tr_cap-silt/tr_cap_', ano, '.png'),
          plot = ptrc, width = 16, height = 20, units = 'cm', dpi = 300)
 }
@@ -311,12 +311,12 @@ for (pasta in pastas) {
   
   # Trcap total
   p_trc_total <- ggplot(shp) +
-    geom_col(aes(FromN, Dep_Tot_classes_mean/1000, fill = 'red'), color = 1, lwd = 0.1) +
+    geom_col(aes(FromN, Tr_cap_Tot_classes_mean/1000, fill = 'red'), color = 1, lwd = 0.1) +
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
-    geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = ((Dep_Tot_classes_mean/1000)+(max(shp$Dep_Tot_classes_mean/1000)*0.2)),
-                                    yend = (Dep_Tot_classes_mean/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
-    geom_text(data = l_trib, aes(FromN, ((Dep_Tot_classes_mean/1000)+(max(shp$Dep_Tot_classes_mean/1000)*0.2)),
+    geom_segment(data = l_trib, aes(x = FromN, xend = FromN, y = ((Tr_cap_Tot_classes_mean/1000)+(max(shp$Tr_cap_Tot_classes_mean/1000)*0.2)),
+                                    yend = (Tr_cap_Tot_classes_mean/1000), colour = 'blue'), arrow = arrow(length = unit(0.15, 'cm')), linewidth = 0.5) +
+    geom_text(data = l_trib, aes(FromN, ((Tr_cap_Tot_classes_mean/1000)+(max(shp$Tr_cap_Tot_classes_mean/1000)*0.2)),
                                  label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
     scale_y_continuous(name = 'Total (1000 m'^3~' y'^-1~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
     scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
