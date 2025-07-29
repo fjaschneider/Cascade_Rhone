@@ -398,7 +398,7 @@ p_D84
 
 ```
 
-The grain size distribution (GSD) was obtained from the data available in the report by Parrot et al. (2021), Annexe 17: Données statistiques (D16, D50, D84, D90) des prélèvements réalisés par dragage avec la CNR dans le chenal du Rhône (campagnes 2012-13). The Figure \@ref(fig:gsd) shows the data measured data (black bars) and the linearly estimated values (brown bars) for each river reach along the Rhône River.
+The grain size distribution (GSD) was obtained from the data available in the report by Parrot et al. [-@parrot2014], Annexe 17: Données statistiques (D16, D50, D84, D90) des prélèvements réalisés par dragage avec la CNR dans le chenal du Rhône (campagnes 2012-13). The Figure \@ref(fig:gsd) shows the data measured (black bars) and the linearly estimated values (brown bars) for each river reach along the Rhône River.
 
 For the reaches with more than one GSD value, the highest value observed for each GSD class was used. For the reaches without GSD data, values were linearly interpolated from neighboring reaches with available data.
 
@@ -794,9 +794,9 @@ kable(df_E, format = "html", escape = FALSE, align = "c") %>%
 
 
 
-# Result
+# Preliminary Result
 
-Preliminary results were obtained using three different sediment transport equations, each simulated under three distinct trap efficiency scenarios. The equations used to estimate sediment transport were developed by Wilkock and Crowe, Eugelund and Hansen, and, Ackers and White.
+Preliminary results were obtained using three different sediment transport equations, each simulated under three distinct trap efficiency scenarios. The equations used to estimate sediment transport were developed by Wilcock and Crowe [-@WandC2003], Eugelund and Hansen [-@EandH67], and, Ackers and White [-@AandW73].
 
 For each equation, three trap efficiency scenarios were considered: (i) no dams influence, where the model assumes no dams present along the river; (ii) 100% trap efficiency, where all the sediment reaching a dammed reach is fully retained; and (iii) variable trap efficiencies as presented in Table 1. Simulations were caried out for the period from 2010 to 2019, with annual results available in supplementary material.
 
@@ -1104,6 +1104,18 @@ knitr::include_graphics("img/res_cascade/res_E3_eA&W/plots_dep-silt/dep_res_sum_
 ```{r budgetE3eA, echo=FALSE, fig.cap='Cumulative discharge and sediment budget for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation accounting dams trap efficiency of 100%.'}
 
 knitr::include_graphics("img/res_cascade/res_E3_eA&W/plots_sed_budget-silt/sed_bud_res_sum_hy_E3_eA&W.png")
+
+```
+
+
+
+## Bedload transport capacity
+
+The results of transport capacity using the three equations along the Rhône River are shown in Figure \@ref(fig:Trcmap). The scale was adjusted to be consistent with the report by Laval [-@Laval20].
+
+```{r Trcmap, echo=FALSE, fig.cap='Bedload transport capacity along the Rhône River calculated using three different equations: Wilcock and Crowe, Engelund and Hansen, and Ackers and White.'}
+
+knitr::include_graphics("img/res_cascade_trc.png")
 
 ```
 
