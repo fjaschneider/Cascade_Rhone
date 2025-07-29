@@ -639,7 +639,7 @@ for (pasta in pastas) {
     geom_text(data = l_trib, aes(FromN, Vout_Tot_classes_mean/1000+(max(shp$Vout_Tot_classes_mean/1000)*0.2), 
                                  label = Trib), angle = 90, vjust = 0, hjust = 0, size = 2, color = 'blue') +
     geom_vline(data = l_dams, aes(xintercept = FromN, colour = 'black'), linetype = 5, lwd = 0.2) +
-    scale_y_continuous(name = 'Total (1000 m'^3~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
+    scale_y_continuous(name = 'Total (1000 m'^3~' y'^-1~')', n.breaks = 10, expand = expansion(c(0,0.05))) +
     scale_x_continuous(n.breaks = 15, limits = c(0,70), expand = c(0,0)) +
     scale_fill_manual(breaks = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
                       values = c('blue4', 'orangered', 'coral4', 'black', 'blue'),
