@@ -1,0 +1,497 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{book}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{booktabs}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage[]{natbib}
+\bibliographystyle{plainnat}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Cascade Rhône River catchment},
+  pdfauthor={Fabio Schneider},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Cascade Rhône River catchment}
+\author{Fabio Schneider}
+\date{2025-07-31}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{1}
+\tableofcontents
+}
+\chapter*{About}\label{about}
+\addcontentsline{toc}{chapter}{About}
+
+\chapter{Introduction}\label{introduction}
+
+\chapter{Methods}\label{methods}
+
+\section{Study area}\label{study-area}
+
+Located in the South-West of Switzerland and South-East of France the Rhône River flows trough 800 km, where \textasciitilde525 km in French territory. The Rhône River catchment is the most important source of hydropower in France. It covers an area of approximately 97800 km2, of which 87400 km2 (about 90\%) lies within French territory (Figure \ref{fig:local}). In this study, we simulated the bedload connectivity along the main Rhône River within French territory.
+
+\begin{figure}
+\includegraphics[width=34.44in]{img/local_mapa} \caption{Location of the Rhône River catchment with the main dams along the river.}\label{fig:local}
+\end{figure}
+
+Grain size distribution (GSD) data and bedload measurements in rivers are often scarce or absent, making bedload modeling challenging. For this reason, we chose to model the bedload connectivity along the Rhône River rather than in its tributaries, where data availability even more limited.
+
+\section{Cascade Model Data Input}\label{cascade-model-data-input}
+
+The Cascade model is an expert-based model that uses geomorphological river characteristics to simulate bedload transport capacity.
+
+To characterize the geomorfological properties of the river, the dataset must include information for each river reach.
+
+\subsection{Number of Reaches}\label{number-of-reaches}
+
+To prepare the input data for the Cascade model, the river reaches were modified to incorporate the reservoirs associated with each dam. The previous dataset contained 195 reaches, after the adjustments, we updated dataset includes a total of 67 reaches.
+
+We adapted the number of reaches by summarizing those with similar geomorphological characteristics by integrating all reaches contained within each dam reservoir. Figure \ref{fig:reaches} shows the integration of the reaches within the Génissiat Reservoir.
+
+\begin{figure}
+\includegraphics[width=43.33in]{img/reach} \caption{Integration of reaches affected by dam reservoirs}\label{fig:reaches}
+\end{figure}
+
+\subsection{Elevation and Slope data smoothed}\label{elevation-and-slope-data-smoothed}
+
+To remove the effect of dams on elevation and slope along the Rhône River, we smoothed the elevation profile to approximate as closely as possible the natural river slope, without influence of dam reservoirs. The resulting smoothed elevation profile is show in Figure \ref{fig:elev}. Figure \ref{fig:slope} shows the slope for each river reach based on the smoothed elevation profile. The slope in the upper part of the Rhône River is steeper, while downstream of the Génissiat Dam, the slope becomes more gradual and remains relatively uniform until the catchment outlet.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/elev-1.pdf}}
+\caption{\label{fig:elev}Comparision between the original and smoothed elevation profile of the Rhône River.}
+\end{figure}
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/slope-1.pdf}}
+\caption{\label{fig:slope}Longitudinal slope profile of the Rhône River derived from the smoothed elevation data.}
+\end{figure}
+
+\subsection{Channel width and Manning's coefficient}\label{channel-width-and-mannings-coefficient}
+
+Figure \ref{fig:wac} shows the channel width, and Figure \ref{fig:n} shows the Manning's coefficient for each river reach along the Rhône River. Figure \ref{fig:basemaps} shows the longitudinal variation of Manning's coefficient, channel width, and slope along the river. Channel width tends to increase at confluences with tributaries. The Manning's coefficient was defined as relative uniform along the Rhône River.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/wac-1.pdf}}
+\caption{\label{fig:wac}Channel width of each river reach along the Rhône River.}
+\end{figure}
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/n-1.pdf}}
+\caption{\label{fig:n}Manning's coefficient of each river reach along the Rhône River.}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=34.44in]{img/base_maps} \caption{Longitudinal Manning’s coefficient, slope, and channel width along the Rhône River.}\label{fig:basemaps}
+\end{figure}
+
+\subsection{GSD along the Rhône River}\label{gsd-along-the-rhuxf4ne-river}
+
+The grain size distribution (GSD) was obtained from the data available in the report by Parrot et al. \citeyearpar{parrot2014}, Annexe 17: Données statistiques (D16, D50, D84, D90) des prélèvements réalisés par dragage avec la CNR dans le chenal du Rhône (campagnes 2012-13). The Figure \ref{fig:gsd} shows the data measured (black bars) and the linearly estimated values (brown bars) for each river reach along the Rhône River.
+
+For the reaches with more than one GSD value, the highest value observed for each GSD class was used. For the reaches without GSD data, values were linearly interpolated from neighboring reaches with available data.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{_main_files/figure-latex/gsd-1.pdf}}
+\caption{\label{fig:gsd}Grain Size Distribution (GSD) measured and estimated of the bed material along the Rhône River for each river reach.}
+\end{figure}
+
+\section{Discharge}\label{discharge}
+
+The discharge was obtained by the J2000 model. For each river reach of Cascade input model we selected the closer river reach of the J2000 model. Therefore, the discharge for along the Rhône River is swhowed in the Figure \ref{fig:q}.
+
+\begin{figure}
+\includegraphics[width=26.67in]{img/discharge} \caption{Discharge of each river reach along the Rhône River (2000-2019).}\label{fig:q}
+\end{figure}
+
+\section{\texorpdfstring{Trap efficiency \citep{GILL1979}}{Trap efficiency {[}@GILL1979{]}}}\label{trap-efficiency-gill1979}
+
+Trap efficiency was estimated by the ratio of reservoir capacity (\emph{C}) to catchment area (\emph{A}). This relationship was proposed by Brune \citeyearpar{Brune53}, who presented the following Equation \eqref{eq:E}:
+
+\begin{equation}
+  E = 1 - \frac{1}{1 + k \cdot \frac{C}{A}}
+  \label{eq:E}
+\end{equation}
+
+Where:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{C} is the reservoir capacity (acre-feet)\\
+\item
+  \emph{A} is the catchment area (mi²)\\
+\item
+  \emph{E} is the trap efficiency\\
+\item
+  \emph{k} is a coefficient that varies according to sediment grain size
+\end{itemize}
+
+The recommended values of \emph{k} are:
+- 1.0 for coarse sediments\\
+- 0.1 for medium sediments\\
+- 0.046 for fine sediments
+
+Equation \eqref{eq:Em} presents the same relationship using metric units:
+
+\begin{equation}
+  E = 1 - \frac{1}{1 + 0.0021 \cdot k \cdot \frac{C}{A}}
+  \label{eq:Em}
+\end{equation}
+
+The \emph{C/A} ratio provides a simple method for estimating trap efficiency. However, it is important to recognize that sediment trapping is a much more complex process than what is represented by the equations described above. Despite this simplification, the method remains useful, particularly for dams with limited available data.
+
+Therefore, in the Rhône catchment, Equation \eqref{eq:Em} was applied to estimate the trap efficiency for the dams located along the main river.
+
+Table \ref{tab:trapE} presents the trap efficiency (\emph{E}) values for fine, medium, and coarse sediments at each dam on the Rhône River.
+
+\begin{table}
+
+\caption{\label{tab:trapE}Trap efficiency (E) for fine, medium, and coarse sediments at each dam located on the Rhône River.}
+\centering
+\begin{tabular}[t]{c|c|c|c|c|c}
+\hline
+Dam & C (m<sup>3</sup>) & A (km<sup>2</sup>) & Fine<br>(< 0.062 mm) & Medium<br>(0.062–2 mm) & Coarse<br>(> 2 mm)\\
+\hline
+Verbois &  &  & 0.12 & 0.22 & 0.74\\
+\hline
+Chancy Pougny & 14,000,000 & 10,294 & 0.12 & 0.22 & 0.74\\
+\hline
+Génissiat & 72,000,000 & 10,910 & 0.39 & 0.58 & 0.93\\
+\hline
+Seyssel & 7,600,000 & 11,300 & 0.06 & 0.12 & 0.59\\
+\hline
+Chautagne &  & 12,700 & 0.21 & 0.37 & 0.85\\
+\hline
+Belley &  & 12,985 & 0.21 & 0.37 & 0.85\\
+\hline
+Brégnier-Cordon &  & 14,000 & 0.21 & 0.37 & 0.85\\
+\hline
+Sault-Brénaz &  & 15,380 & 0.21 & 0.37 & 0.85\\
+\hline
+Jons & 55,000,000 & 20,000 & 0.21 & 0.37 & 0.85\\
+\hline
+Pierre Bénite &  & 50,400 & 0.21 & 0.37 & 0.85\\
+\hline
+Vaugris & 41,000,000 & 51,700 & 0.07 & 0.14 & 0.62\\
+\hline
+Péage de Roussillon &  & 52,880 & 0.21 & 0.37 & 0.85\\
+\hline
+Saint Valiier &  & 53,850 & 0.21 & 0.37 & 0.85\\
+\hline
+Bourg-lès Valences &  & 66,450 & 0.21 & 0.37 & 0.85\\
+\hline
+Beauchastel &  & 66,700 & 0.21 & 0.37 & 0.85\\
+\hline
+Baix-le Logis Neuf &  & 69,960 & 0.21 & 0.37 & 0.85\\
+\hline
+Montélimar &  & 70,900 & 0.21 & 0.37 & 0.85\\
+\hline
+Donzère-Mondragon & 27,000,000 & 71,000 & 0.04 & 0.07 & 0.44\\
+\hline
+Caderousse & 123,000 &  & 0.07 & 0.14 & 0.62\\
+\hline
+Avignon &  &  & 0.04 & 0.07 & 0.44\\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Where:}\\
+- \texttt{C} is the reservoir capacity (m3)\\
+- \texttt{A} is the catchment area (km2)\\
+- Trap efficiency values highlighted in yellow in the original source were estimated by similarity.
+
+\chapter{Preliminary Result}\label{preliminary-result}
+
+Preliminary results were obtained using three different sediment transport equations, each simulated under three distinct trap efficiency scenarios. The equations used to estimate sediment transport were developed by Wilcock and Crowe \citeyearpar{WandC2003}, Eugelund and Hansen \citeyearpar{EandH67}, and, Ackers and White \citeyearpar{AandW73}.
+
+For each equation, three trap efficiency scenarios were considered: (i) no dams influence, where the model assumes no dams present along the river; (ii) 100\% trap efficiency, where all the sediment reaching a dammed reach is fully retained; and (iii) variable trap efficiencies as presented in Table 1. Simulations were caried out for the period from 2000 to 2019, with annual results available in supplementary material.
+
+Three grain size classes were used based on Krumbein's scale: sand (0.06-2 mm), gravel (2-256 mm), and boulder (\textgreater256 mm).
+
+The following figures (from Figure \ref{fig:TrcE0eW} to Figure \ref{fig:budgetE2eA}) present the cumulative bedload transported, deposited and sediment budget over the 20-year period for each equation and trap efficiency scenario.
+
+\section{No dams}\label{no-dams}
+
+\subsection{Wilkock and Crowe equation}\label{wilkock-and-crowe-equation}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E0_eW&C_noDams/plots_tr_cap-silt/tr_cap_res_sum_hy_E0_eW&C_noDams} \caption{Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation without accounting dams trap efficiency.}\label{fig:TrcE0eW}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E0_eW&C_noDams/plots_transp-silt/transp_res_sum_hy_E0_eW&C_noDams} \caption{Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation without accounting dams trap efficiency.}\label{fig:TrE0eW}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E0_eW&C_noDams/plots_dep-silt/dep_res_sum_hy_E0_eW&C_noDams} \caption{Cumulative discharge and bedload deposited for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation without accounting dams trap efficiency.}\label{fig:DepE0eW}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E0_eW&C_noDams/plots_sed_budget-silt/sed_bud_res_sum_hy_E0_eW&C_noDams} \caption{Cumulative discharge and sediment budget for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation without accounting dams trap efficiency.}\label{fig:budgetE0eW}
+\end{figure}
+
+\subsection{Eugelund and Hansen equation}\label{eugelund-and-hansen-equation}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E0_eE&H_noDams/plots_tr_cap-silt/tr_cap_res_sum_hy_E0_eE&H_noDams} \caption{Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation without accounting dams trap efficiency.}\label{fig:TrcE0eE}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E0_eE&H_noDams/plots_transp-silt/transp_res_sum_hy_E0_eE&H_noDams} \caption{Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation without accounting dams trap efficiency.}\label{fig:TrE0eE}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E0_eE&H_noDams/plots_dep-silt/dep_res_sum_hy_E0_eE&H_noDams} \caption{Cumulative discharge and bedload deposited for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation without accounting dams trap efficiency.}\label{fig:DepE0eE}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E0_eE&H_noDams/plots_sed_budget-silt/sed_bud_res_sum_hy_E0_eE&H_noDams} \caption{Cumulative discharge and sediment budget for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation without accounting dams trap efficiency.}\label{fig:budgetE0eE}
+\end{figure}
+
+\subsection{Ackers and White equation}\label{ackers-and-white-equation}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E0_eA&W_noDams/plots_tr_cap-silt/tr_cap_res_sum_hy_E0_eA&W_noDams} \caption{Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.}\label{fig:TrcE0eA}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E0_eA&W_noDams/plots_transp-silt/transp_res_sum_hy_E0_eA&W_noDams} \caption{Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.}\label{fig:TrE0eA}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E0_eA&W_noDams/plots_dep-silt/dep_res_sum_hy_E0_eA&W_noDams} \caption{Cumulative discharge and bedload deposited for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.}\label{fig:DepE0eA}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E0_eA&W_noDams/plots_sed_budget-silt/sed_bud_res_sum_hy_E0_eA&W_noDams} \caption{Cumulative discharge and sediment budget for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.}\label{fig:budgetE0eA}
+\end{figure}
+
+\section{100\% Trap efficiency}\label{trap-efficiency}
+
+\subsection{Wilkock and Crowe equation}\label{wilkock-and-crowe-equation-1}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E3_eW&C/plots_tr_cap-silt/tr_cap_res_sum_hy_E3_eW&C} \caption{Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation accounting dams trap efficiency of 100\%.}\label{fig:TrcE3eW}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E3_eW&C/plots_transp-silt/transp_res_sum_hy_E3_eW&C} \caption{Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation accounting dams trap efficiency of 100\%.}\label{fig:TrE3eW}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E3_eW&C/plots_dep-silt/dep_res_sum_hy_E3_eW&C} \caption{Cumulative discharge and bedload deposited for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation accounting dams trap efficiency of 100\%.}\label{fig:DepE3eW}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E3_eW&C/plots_sed_budget-silt/sed_bud_res_sum_hy_E3_eW&C} \caption{Cumulative discharge and sediment budget for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation accounting dams trap efficiency of 100\%.}\label{fig:budgetE3eW}
+\end{figure}
+
+\subsection{Eugelund and Hansen equation}\label{eugelund-and-hansen-equation-1}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E3_eE&H/plots_tr_cap-silt/tr_cap_res_sum_hy_E3_eE&H} \caption{Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation accounting dams trap efficiency of 100\%.}\label{fig:TrcE3eE}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E3_eE&H/plots_transp-silt/transp_res_sum_hy_E3_eE&H} \caption{Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation accounting dams trap efficiency of 100\%.}\label{fig:TrE3eE}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E3_eE&H/plots_dep-silt/dep_res_sum_hy_E3_eE&H} \caption{Cumulative discharge and bedload deposited for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation accounting dams trap efficiency of 100\%.}\label{fig:DepE3eE}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E3_eE&H/plots_sed_budget-silt/sed_bud_res_sum_hy_E3_eE&H} \caption{Cumulative discharge and sediment budget for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation accounting dams trap efficiency of 100\%.}\label{fig:budgetE3eE}
+\end{figure}
+
+\subsection{Ackers and White equation}\label{ackers-and-white-equation-1}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E3_eA&W/plots_tr_cap-silt/tr_cap_res_sum_hy_E3_eA&W} \caption{Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation accounting dams trap efficiency of 100\%.}\label{fig:TrcE3eA}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E3_eA&W/plots_transp-silt/transp_res_sum_hy_E3_eA&W} \caption{Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation accounting dams trap efficiency of 100\%.}\label{fig:TrE3eA}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E3_eA&W/plots_dep-silt/dep_res_sum_hy_E3_eA&W} \caption{Cumulative discharge and bedload deposited for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation accounting dams trap efficiency of 100\%.}\label{fig:DepE3eA}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E3_eA&W/plots_sed_budget-silt/sed_bud_res_sum_hy_E3_eA&W} \caption{Cumulative discharge and sediment budget for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation accounting dams trap efficiency of 100\%.}\label{fig:budgetE3eA}
+\end{figure}
+
+\section{Trap efficiency (Table 1)}\label{trap-efficiency-table-1}
+
+\subsection{Wilkock and Crowe equation}\label{wilkock-and-crowe-equation-2}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E2_eW&C/plots_tr_cap-silt/tr_cap_res_sum_hy_E2_eW&C} \caption{Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation accounting dams trap efficiency of Table 1.}\label{fig:TrcE2eW}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E2_eW&C/plots_transp-silt/transp_res_sum_hy_E2_eW&C} \caption{Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation accounting dams trap efficiency of Table 1.}\label{fig:TrE2eW}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E2_eW&C/plots_dep-silt/dep_res_sum_hy_E2_eW&C} \caption{Cumulative discharge and bedload deposited for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation accounting dams trap efficiency of Table 1.}\label{fig:DepE2eW}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E2_eW&C/plots_sed_budget-silt/sed_bud_res_sum_hy_E2_eW&C} \caption{Cumulative discharge and sediment budget for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Wilkock and Crowe equation accounting dams trap efficiency of Table 1.}\label{fig:budgetE2eW}
+\end{figure}
+
+\subsection{Eugelund and Hansen equation}\label{eugelund-and-hansen-equation-2}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E2_eE&H/plots_tr_cap-silt/tr_cap_res_sum_hy_E2_eE&H} \caption{Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation accounting dams trap efficiency of Table 1.}\label{fig:TrcE2eE}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E2_eE&H/plots_transp-silt/transp_res_sum_hy_E2_eE&H} \caption{Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation accounting dams trap efficiency of Table 1.}\label{fig:TrE2eE}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E2_eE&H/plots_dep-silt/dep_res_sum_hy_E2_eE&H} \caption{Cumulative discharge and bedload deposited for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation accounting dams trap efficiency of Table 1.}\label{fig:DepE2eE}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E2_eE&H/plots_sed_budget-silt/sed_bud_res_sum_hy_E2_eE&H} \caption{Cumulative discharge and sediment budget for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Eugelund and Hansen equation accounting dams trap efficiency of Table 1.}\label{fig:budgetE2eE}
+\end{figure}
+
+\subsection{Ackers and White equation}\label{ackers-and-white-equation-2}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E2_eA&W/plots_tr_cap-silt/tr_cap_res_sum_hy_E2_eA&W} \caption{Cumulative discharge and bedload transport capacity for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.}\label{fig:TrcE2eA}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E2_eA&W/plots_transp-silt/transp_res_sum_hy_E2_eA&W} \caption{Cumulative discharge and bedload transported for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.}\label{fig:TrE2eA}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E2_eA&W/plots_dep-silt/dep_res_sum_hy_E2_eA&W} \caption{Cumulative discharge and bedload deposited for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.}\label{fig:DepE2eA}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=26.24in]{img/res_cascade/res_E2_eA&W/plots_sed_budget-silt/sed_bud_res_sum_hy_E2_eA&W} \caption{Cumulative discharge and sediment budget for sand (0.63-2 mm), gravel (2-256 mm), boulders (>256 mm), and the total of all three classes for each river reach along the Rhône River, calculated using the Ackers and White equation without accounting dams trap efficiency.}\label{fig:budgetE2eA}
+\end{figure}
+
+\section{Bedload transport capacity}\label{bedload-transport-capacity}
+
+The results of transport capacity using the three equations along the Rhône River are shown in Figure \ref{fig:Trcmap}. The scale was adjusted to be consistent with the report by Laval \citeyearpar{Laval20} (Figure \ref{fig:Laval20}).
+
+\begin{figure}
+\includegraphics[width=31.21in]{img/res_cascade_trc} \caption{Bedload transport capacity along the Rhône River calculated using three different equations: Wilcock and Crowe, Engelund and Hansen, and Ackers and White.}\label{fig:Trcmap}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=0.6\linewidth]{img/laval_2020} \caption{Bedload transport capacity actual according Laval [-@Laval20].}\label{fig:Laval20}
+\end{figure}
+
+Analyzing the bedload transport capacity described in the report by Laval \citeyearpar{Laval20}, the equation that produced the most consistent pattern in the CASCADE model was that of Engelund and Hansen \citeyearpar{EandH67}. The Ackers and White equation \citeyearpar{AandW73} also showed a reasonable pattern; however, when comparing the results (Figure \ref{fig:TrcE2eA}), the transport capacity simulated by the CASCADE model was significantly higher.
+
+Similarly, although the Engelund and Hansen equation \citeyearpar{EandH67} tended to overestimate transport capacity, its results were more consistent with the reference than those from the other equations.
+
+Figure \ref{fig:EHxLaval20} shows a comparison between the results from Laval \citeyearpar{Laval20} and those obtained using the Engelund and Hansen \citeyearpar{EandH67} equation, presented in quantiles.
+
+\begin{figure}
+\includegraphics[width=33.88in]{img/res_cascade_trcxlaval} \caption{Bedload transport capacity actual according Laval [-@Laval20] and Engelund and Hansen [-@EandH67].}\label{fig:EHxLaval20}
+\end{figure}
+
+\chapter{Discussion}\label{discussion}
+
+\chapter{Conclusion}\label{conclusion}
+
+  \bibliography{references/references.bib,packages.bib}
+
+\end{document}
