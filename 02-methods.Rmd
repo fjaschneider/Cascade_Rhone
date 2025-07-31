@@ -574,137 +574,136 @@ p_GSD <- ggarrange(plots = list(plt_elev_gsd, p_D16, p_D50, p_D84), nrow = 4, nc
 The discharge was obtained by the J2000 model. For each river reach of Cascade input model we selected the closer river reach of the J2000 model. Therefore, the discharge for along the Rhône River is swhowed in the Figure \@ref(fig:q).
 
 ```{r, echo=FALSE, warning=FALSE, include=FALSE}
-# 
-# # Discharge main Rhone River
-# df_discharge <- read.csv("data_rhone/Tables/discharge_rhone_1999-2019.csv")
-# colnames(df_discharge) <- c("Date",1:67)
-# 
-# df_q_long <- read.csv("data_rhone/Tables/hydrological_year_statistics_long.csv")
-# df_q_long <- df_q_long[!is.na(df_q_long$runoff),]
-# df_q_long <- df_q_long[df_q_long$reach_ID < 68,]
-# df_q_long <- df_q_long[df_q_long$HY != "Total",]
-# 
-# 
-# library(plotly)
-# library(dplyr)
-# 
-# # Valores únicos
-# stats <- unique(df_q_long$Stat)
-# years <- unique(df_q_long$HY)
-# 
-# # Inicializa a figura
-# fig <- plot_ly()
-# 
-# # Adiciona os traces (um para cada Stat x HY)
-# for (stat in stats) {
-#   for (hy in years) {
-#     df_subset <- df_q_long %>% filter(Stat == stat, HY == hy)
-#     
-#     fig <- fig %>%
-#       add_lines(data = df_subset,
-#                 x = ~as.numeric(reach_ID),
-#                 y = ~runoff,
-#                 name = as.character(hy),
-#                 legendgroup = as.character(hy),
-#                 showlegend = T,
-#                 visible = (stat == "Min"))
-#   }
-# }
-# 
-# # Quantidade de traces
-# n_stats <- length(stats)
-# n_years <- length(years)
-# n_traces <- n_stats * n_years
-# 
-# # Cria matriz de visibilidade para cada botão
-# visibility_matrix <- lapply(1:n_stats, function(i) {
-#   vis <- rep(FALSE, n_traces)
-#   start_idx <- (i - 1) * n_years + 1
-#   end_idx <- i * n_years
-#   vis[start_idx:end_idx] <- TRUE
-#   return(vis)
-# })
-# 
-# # Botões para trocar a variável
-# buttons <- lapply(1:n_stats, function(i) {
-#   list(
-#     method = "restyle",
-#     args = list("visible", visibility_matrix[[i]]),
-#     label = stats[i]
-#   )
-# })
-# 
-# # Layout final com updatemenus
-# fig <- fig %>%
-#   layout(
-#     yaxis = list(title = "Runoff (m<sup>3</sup> s<sup>-1</sup>)"),
-#     xaxis = list(title = "Reach ID"),
-#     updatemenus = list(
-#       list(
-#         y = 1.1,
-#         buttons = buttons,
-#         direction = "down",
-#         showactive = TRUE
-#       )
-#     )
-#   )
-# 
-# fig
-# 
-# 
-# 
-# linhas_verticais <- lapply(trib$reach_ID, function(x_pos) {
-#   list(
-#     type = "line",
-#     x0 = x_pos,
-#     x1 = x_pos,
-#     y0 = 0,
-#     y1 = 1,  # relativo à altura do gráfico
-#     xref = "x",
-#     yref = "paper",  # "paper" significa que y vai de 0 a 1 no espaço do gráfico
-#     line = list(color = "blue", dash = "dot", width = 1.5)
-#   )
-# })
-# 
-# 
-# 
-# fig <- fig %>%
-#   layout(
-#     yaxis = list(title = "Runoff (m<sup>3</sup> s<sup>-1</sup>)"),
-#     xaxis = list(title = "Reach ID"),
-#     shapes = linhas_verticais
-#   )
-# fig
-# 
-# annotacoes_rotacionadas <- lapply(1:nrow(trib), function(i) {
-#   list(
-#     x = trib$reach_ID[i],
-#     y = 1,  # topo do gráfico
-#     xref = "x",
-#     yref = "paper",
-#     text = trib$Trib[i],
-#     showarrow = FALSE,
-#     textangle = -90,  # texto rotacionado
-#     font = list(size = 11, color = "blue"),
-#     xanchor = "left",  # ou "right" dependendo do lado desejado
-#     yanchor = "top"
-#   )
-# })
-# 
+
+# Discharge main Rhone River
+df_discharge <- read.csv("data_rhone/Tables/discharge_rhone_1999-2019.csv")
+colnames(df_discharge) <- c("Date",1:67)
+
+df_q_long <- read.csv("data_rhone/Tables/hydrological_year_statistics_long.csv")
+df_q_long <- df_q_long[!is.na(df_q_long$runoff),]
+df_q_long <- df_q_long[df_q_long$reach_ID < 68,]
+df_q_long <- df_q_long[df_q_long$HY != "Total",]
+
+
+library(plotly)
+library(dplyr)
+
+# Valores únicos
+stats <- unique(df_q_long$Stat)
+years <- unique(df_q_long$HY)
+
+# Inicializa a figura
+fig <- plot_ly()
+
+# Adiciona os traces (um para cada Stat x HY)
+for (stat in stats) {
+  for (hy in years) {
+    df_subset <- df_q_long %>% filter(Stat == stat, HY == hy)
+
+    fig <- fig %>%
+      add_lines(data = df_subset,
+                x = ~as.numeric(reach_ID),
+                y = ~runoff,
+                name = as.character(hy),
+                legendgroup = as.character(hy),
+                showlegend = T,
+                visible = (stat == "Min"))
+  }
+}
+
+# Quantidade de traces
+n_stats <- length(stats)
+n_years <- length(years)
+n_traces <- n_stats * n_years
+
+# Cria matriz de visibilidade para cada botão
+visibility_matrix <- lapply(1:n_stats, function(i) {
+  vis <- rep(FALSE, n_traces)
+  start_idx <- (i - 1) * n_years + 1
+  end_idx <- i * n_years
+  vis[start_idx:end_idx] <- TRUE
+  return(vis)
+})
+
+# Botões para trocar a variável
+buttons <- lapply(1:n_stats, function(i) {
+  list(
+    method = "restyle",
+    args = list("visible", visibility_matrix[[i]]),
+    label = stats[i]
+  )
+})
+
+# Layout final com updatemenus
+fig <- fig %>%
+  layout(
+    yaxis = list(title = "Runoff (m<sup>3</sup> s<sup>-1</sup>)"),
+    xaxis = list(title = "Reach ID"),
+    updatemenus = list(
+      list(
+        y = 1.1,
+        buttons = buttons,
+        direction = "down",
+        showactive = TRUE
+      )
+    )
+  )
+
+fig
+
+
+
+linhas_verticais <- lapply(trib$reach_ID, function(x_pos) {
+  list(
+    type = "line",
+    x0 = x_pos,
+    x1 = x_pos,
+    y0 = 0,
+    y1 = 1,  # relativo à altura do gráfico
+    xref = "x",
+    yref = "paper",  # "paper" significa que y vai de 0 a 1 no espaço do gráfico
+    line = list(color = "blue", dash = "dot", width = 1.5)
+  )
+})
+
+
+
+fig <- fig %>%
+  layout(
+    yaxis = list(title = "Runoff (m<sup>3</sup> s<sup>-1</sup>)"),
+    xaxis = list(title = "Reach ID"),
+    shapes = linhas_verticais
+  )
+fig
+
+annotacoes_rotacionadas <- lapply(1:nrow(trib), function(i) {
+  list(
+    x = trib$reach_ID[i],
+    y = 1,  # topo do gráfico
+    xref = "x",
+    yref = "paper",
+    text = trib$Trib[i],
+    showarrow = FALSE,
+    textangle = -90,  # texto rotacionado
+    font = list(size = 11, color = "blue"),
+    xanchor = "left",  # ou "right" dependendo do lado desejado
+    yanchor = "top"
+  )
+})
+
 
 ```
 
 
 ```{r q, fig.cap= 'Discharge of each river reach along the Rhône River (2000-2019).', warning=FALSE, echo=FALSE}
-# fig <- fig %>%
-#   layout(
-#     shapes = linhas_verticais,  # do exemplo anterior
-#     annotations = annotacoes_rotacionadas
-#   )
-# fig
+fig <- fig %>%
+  layout(
+    shapes = linhas_verticais,  # do exemplo anterior
+    annotations = annotacoes_rotacionadas
+  )
+fig
 
-knitr::include_graphics("img/discharge.png")
-
+# knitr::include_graphics("img/discharge.png")
 
 ```
 
@@ -753,12 +752,12 @@ df_E <- read.csv("data_rhone/Tables/Trap_efficiency.csv")
 colnames(df_E) <- c("Dam", "C (m<sup>3</sup>)", "A (km<sup>2</sup>)", "Fine<br>(< 0.062 mm)", "Medium<br>(0.062–2 mm)", "Coarse<br>(> 2 mm)")
 
 # html
-# kable(df_E, format = "html", escape = FALSE, align = "c") %>%
-#   kable_styling(full_width = TRUE, position = "center", font_size = 12, bootstrap_options = c("striped", "hover")) %>%
-#   scroll_box(height = "400px", width = "100%", fixed_thead = TRUE)
+kable(df_E, format = "html", escape = FALSE, align = "c") %>%
+  kable_styling(full_width = TRUE, position = "center", font_size = 12, bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(height = "400px", width = "100%", fixed_thead = TRUE)
 
-# pdf
-kable(df_E, align = "c")
+# # pdf
+# kable(df_E, align = "c")
 
 ```
 
