@@ -1,0 +1,33 @@
+--- 
+title: "Cascade Rhône River catchment"
+author: "Fabio Schneider"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [references/references.bib, packages.bib]
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+
+---
+
+# About {-}
+
+
+
+
+```{r, eval=FALSE, include=FALSE}
+bookdown::render_book()
+```
+
+
+```{r eval=FALSE, include=FALSE}
+bookdown::serve_book()
+```
+
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
